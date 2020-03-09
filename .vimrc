@@ -12,7 +12,11 @@ set cursorline                          "显示当前行
 set number                              "Let's activate line numbers.
 set clipboard=unnamedplus   "使用系统剪贴板"
 set showcmd
-set scrolloff=5 "屏幕下方保留5行"
+set scrolloff=5 
+"屏幕下方保留5行""jk为esc，想输入jk慢打即可
+"(找到更好的办法https://gitlab.com/interception/linux/plugins/caps2esc,直接将caps映射为esc和ctrl) 
+"inoremap jk <ESC>
+inoremap ;; <ESC>$a;
 
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif "可以保存退出时的光标位置"
@@ -33,9 +37,11 @@ Plug 'tpope/vim-fireplace'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'nsf/gocode'
 Plug 'liuchengxu/vista.vim'
+map <leader>v :Vista<CR>
 Plug 'Yggdroot/LeaderF'
 Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plug 'Raimondi/delimitMate' " 自动补全括号
+Plug 'lilydjwg/fcitx.vim'
 Plug 'skywind3000/gutentags_plus'
 "括号补全
     let delimitMate_expand_cr = 1
@@ -52,8 +58,8 @@ Plug 'Shougo/echodoc.vim'
     set laststatus =2
     set noshowmode
     let g:echodoc_enable_at_startup = 2
-Plug 'tpope/vim-surround' "添加引号使用cs 
-Plug 'preservim/nerdcommenter' "添加注释cc，删除注释cu
+Plug 'tpope/vim-surround' "改变引号使用cs，添加引号使用ysiw(normal),或S(visual)
+Plug 'preservim/nerdcommenter' "添加注释<leader>cc，删除注释<leader>cu
 " To use echodoc, you must increase 'cmdheight' value.
              "set completeopt=menu,menuone
              "let g:ycm_add_preview_to_completeopt = 0
@@ -109,7 +115,7 @@ nnoremap K 5k
 nnoremap L 7l
 
 "查看函数文档
-nnoremap <C-I> K
+nnoremap <C-P> K
 "----------------------Fold--------------------------------------"
 let g:SimpylFold_docstring_preview=1
 ""set foldenable
@@ -183,8 +189,8 @@ let &t_EI = "\<Esc>[2 q"
 " 只能是 #include 或已打开的文件
 set completeopt=longest,menu	"让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 let g:ycm_autoclose_preview_window_after_completion=1
-map <leader>gr  :YcmCompleter GoToReferences
-map <leader>gd  :YcmCompleter GoToDefinitionElseDeclaration<CR>
+map <leader>gr  :YcmCompleter GoToReferences<CR>
+map <leader>gdd  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 let g:ycm_add_preview_to_completeopt = 0
 let g:ycm_show_diagnostics_ui = 0
 let g:ycm_server_log_level = 'info'
