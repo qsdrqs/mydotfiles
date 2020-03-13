@@ -275,7 +275,7 @@ tmux_conf_copy_to_os_clipboard=false
 # this is the place to override or undo settings
 set -ga terminal-overrides ',*:Tc'
 set -g default-terminal "screen-256color"
-#set -g prefix C-g
+set -g prefix C-g
 setw -g mode-keys vi
 # increase history size
 #set -g history-limit 10000
