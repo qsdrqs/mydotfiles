@@ -132,7 +132,8 @@ alias vimrc="vim ~/.vimrc"
 
 #vi-mode
 bindkey -v
-
+bindkey -M viins '^L' vi-forward-char
+bindkey -M viins '^H' vi-backward-char
 function zle-keymap-select {
 	if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
 		echo -ne '\e[1 q'
@@ -141,7 +142,7 @@ function zle-keymap-select {
   fi
 }
 zle -N zle-keymap-select
-#echo -ne '\e[5 q'
+echo -ne '\e[5 q'
 
 KEYTIMEOUT=1
 EDITOR=vim 

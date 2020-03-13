@@ -1,0 +1,16 @@
+# This is Git's per-user configuration file.
+[user]
+	name = qsdrqs
+	email = qsdrqs@gmail.com
+# Please adapt and uncomment the following lines:
+#	name = 
+#	email = qsdrqs@ArchLinux.(none)
+[http]
+
+proxy = http://127.0.0.1:1080
+
+[https]
+
+proxy = http://127.0.0.1:1080
+[core]
+	editor = vim

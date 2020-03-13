@@ -1,77 +1,98 @@
+
+"              __     _____ __  __ ____   ____ 
+"              \ \   / /_ _|  \/  |  _ \ / ___|
+"               \ \ / / | || |\/| | |_) | |    
+"                \ V /  | || |  | |  _ <| |___ 
+"                 \_/  |___|_|  |_|_| \_\\____|
+                                
 set nocompatible
 let &t_ut=''
-let mapleader = ','                     "The default leader is \, but a comma is much better. 尽量减少小指的负担
+let mapleader = ' '                     "The default leader is \, but a space is much better. 尽量减少小指的负担
 " 替换查找（f 或 t) 上一个为 \
 noremap \ ,
+map <leader>rc :tabe ~/.vimrc<CR>
 set encoding=utf-8
 "显示相对行号
 set relativenumber
-set t_CO=256                            "Use 256 colors.This is usefull for terminal vim.
+set t_Co=256                            "Use 256 colors.This is usefull for terminal vim.
 set nu
 set cursorline                          "显示当前行
 set number                              "Let's activate line numbers.
 set clipboard=unnamedplus   "使用系统剪贴板"
 set showcmd
-set scrolloff=5 
-"屏幕下方保留5行""jk为esc，想输入jk慢打即可
-"(找到更好的办法https://gitlab.com/interception/linux/plugins/caps2esc,直接将caps映射为esc和ctrl) 
+"屏幕下方保留6行"
+set scrolloff=6 
+"jk为esc，想输入jk慢打即可(找到更好的办法https://gitlab.com/interception/linux/plugins/caps2esc,直接将caps映射为esc和ctrl) 
 "inoremap jk <ESC>
 inoremap ;; <ESC>$a;
+packadd termdebug
 
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif "可以保存退出时的光标位置"
 endif
-"set rtp+={repository_root}/powerline/bindings/vim
+set rtp+=$HOME/.vim/plugged/
 call plug#begin('~/.vim/plugged')
 Plug 'tmhedberg/SimpylFold'
+Plug 'voldikss/vim-translator'
+" <Leader>t 翻译光标下的文本，在命令行回显
+nmap <silent> <Leader>y <Plug>Translate
+vmap <silent> <Leader>y <Plug>TranslateV
+" Leader>w 翻译光标下的文本，在窗口中显示
+nmap <silent> <Leader>t <Plug>TranslateW
+vmap <silent> <Leader>t <Plug>TranslateWV
+" Leader>r 替换光标下的文本为翻译内容
+nmap <silent> <Leader>r <Plug>TranslateR
+vmap <silent> <Leader>r <Plug>TranslateRV
+
 Plug 'Valloric/YouCompleteMe'
 Plug 'scrooloose/syntastic'
-Plug 'nvie/vim-flake8'
+Plug 'nvie/vim-flake8' "Python语法检查工具，F7启动
 Plug 'sickill/vim-monokai'
-"Plug 'puremourning/vimspector'  "调试器 
+Plug 'puremourning/vimspector'  "调试器 
+    let g:vimspector_enable_mappings = 'HUMAN'
 Plug 'scrooloose/nerdtree' , { 'on':  'NERDTreeToggle' }
 Plug 'jistr/vim-nerdtree-tabs'
 let g:NERDTreeWinSize = 20 "設定 NERDTree 視窗大小
-map nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
+map <leader>nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
 Plug 'tpope/vim-fireplace'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'nsf/gocode'
+Plug 'nsf/gocode',{'for':'go'} "go语言自动补全
 Plug 'liuchengxu/vista.vim'
 map <leader>v :Vista<CR>
 Plug 'Yggdroot/LeaderF'
 Plug 'powerline/powerline', {'rtp': 'powerline/bindings/vim/'}
 Plug 'Raimondi/delimitMate' " 自动补全括号
-Plug 'lilydjwg/fcitx.vim'
+Plug 'lilydjwg/fcitx.vim'   "切回normal后关闭fcitx
 Plug 'skywind3000/gutentags_plus'
 "括号补全
-    let delimitMate_expand_cr = 1
-    let delimitMate_expand_space = 1
-    au FileType python let b:delimitMate_nesting_quotes = ['"']
-    "au FileType tex let g:delimitMate_quotes="$"
-    au FileType tex inoremap $ $$<left>
+   let delimitMate_expand_cr = 1
+   let delimitMate_expand_space = 1
+   au FileType python let b:delimitMate_nesting_quotes = ['"']
+   "au FileType tex let g:delimitMate_quotes="$"
+   au FileType tex inoremap $ $$<left>
 Plug 'lervag/vimtex'
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
-    set conceallevel=2
-    let g:tex_conceal="abdgm"
+   set conceallevel=2
+   let g:tex_conceal="abdgm"
 "Plug 'vim-scripts/Align'
 Plug 'Shougo/echodoc.vim'
-    set laststatus =2
-    set noshowmode
-    let g:echodoc_enable_at_startup = 2
+   set laststatus =2
+   set noshowmode
+   let g:echodoc_enable_at_startup = 2
 Plug 'tpope/vim-surround' "改变引号使用cs，添加引号使用ysiw(normal),或S(visual)
 Plug 'preservim/nerdcommenter' "添加注释<leader>cc，删除注释<leader>cu
 " To use echodoc, you must increase 'cmdheight' value.
-             "set completeopt=menu,menuone
-             "let g:ycm_add_preview_to_completeopt = 0
+            "set completeopt=menu,menuone
+            "let g:ycm_add_preview_to_completeopt = 0
 Plug 'Linfee/ultisnips-zh-doc'
 Plug 'ludovicchabant/vim-gutentags' 
 Plug 'mbbill/undotree' "查看文件历史"
 map U :UndotreeToggle<CR>
 " -----------------begin 美观 ------------------{{{
-  Plug 'itchyny/vim-cursorword', { 'for': ['c', 'cpp', 'java', 'python', 'julia', 'matlab'] }
-  Plug 'lfv89/vim-interestingwords' "使用 <Leader>k 和 <Leader>K 选择和取消
-  Plug 'MattesGroeger/vim-bookmarks'
-"  " -----------------end 美观 ------------------}}}
+ Plug 'itchyny/vim-cursorword', { 'for': ['c', 'cpp', 'java', 'python', 'julia', 'matlab'] }
+ Plug 'lfv89/vim-interestingwords' "使用 <Leader>k 和 <Leader>K 选择和取消
+ Plug 'MattesGroeger/vim-bookmarks' "书签工具
+" -----------------end 美观 ------------------}}}
 " All of your Plugins must be added before the following line
 call plug#end()            " required
 filetype plugin indent on    " required
@@ -109,26 +130,28 @@ noremap th :-tabnext<CR>
 noremap tl :+tabnext<CR>
 
 "快速翻页
-nnoremap H 7h
-nnoremap J 5j
-nnoremap K 5k
-nnoremap L 7l
+noremap H 7h
+noremap J 5j
+noremap K 5k
+noremap L 7l
 
 "查看函数文档
 nnoremap <C-P> K
 "----------------------Fold--------------------------------------"
 let g:SimpylFold_docstring_preview=1
 ""set foldenable
-set foldmethod=indent
+set foldmethod=marker
 "set foldcolumn=0           "设置折叠宽度
 setlocal foldlevel=99      "设置折叠层数为
 "set foldclose=all          "设置自动关闭折叠
-nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+"nnoremap <leader> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
+nnoremap <leader><leader> :w<CR>
+nnoremap <leader><leader><leader> :wq<CR>
 "---------------------tex---------------------------------"
-""autocmd BufReadPost *.md setlocal spell spelllang=en_us,cjk
+autocmd BufReadPost *.md setlocal spell spelllang=en_us,cjk
 "忽略中文对英文进行拼写检查
 "" 使用 <C-l> 更改拼写错误
-"inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+noremap <leader><C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 "跳出括号（可能有更好的方法）
 inoremap <C-l> <Right>
 inoremap <C-h> <Left>
@@ -137,16 +160,6 @@ set backspace=indent,eol,start          "Make backspace behave like every other 
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
-let g:vimtex_compiler_latexmk_engines = {
-        \ '_'                : '-xelatex',
-        \ 'pdflatex'         : '-pdf',
-        \ 'dvipdfex'         : '-pdfdvi',
-        \ 'lualatex'         : '-lualatex',
-        \ 'xelatex'          : '-xelatex',
-        \ 'context (pdftex)' : '-pdf -pdflatex=texexec',
-        \ 'context (luatex)' : '-pdf -pdflatex=context',
-        \ 'context (xetex)'  : '-pdf -pdflatex=''texexec --xtx''',
-        \}
 "使ycm生效
 if !exists('g:ycm_semantic_triggers')
    let g:ycm_semantic_triggers = {}
@@ -156,7 +169,7 @@ au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
 "---------------------Search---------------------------------"
 set hlsearch
 set incsearch
-set ignorecase smartcase               "
+set ignorecase smartcase               
 "搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 
 "split navigations
@@ -207,6 +220,7 @@ let g:ycm_key_list_previous_completion = ['<S-Tab>', '<Up>']
 let g:ycm_filetype_whitelist = {
 			\ "c":1,
 			\ "cpp":1,
+            \ "java":1,
 			\ "objc":1,
             \ "python":1,
             \ "tex":1,
