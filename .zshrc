@@ -4,7 +4,7 @@
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
-set nonomatch
+setopt nonomatch
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
@@ -114,11 +114,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=blue"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-#alias
 alias t="tmux"
 alias ta="tmux attach-session -t"
 alias sp="sudo pacman"
@@ -126,14 +121,31 @@ alias tk="tmux kill-pane"
 alias c="clear"
 alias n="neofetch"
 alias ra="ranger"
-alias x="xmodmap ~/.xmodmap"
-alias zshrc="vim ~/.zshrc"
-alias vimrc="vim ~/.vimrc"
+alias zshrc="nvim ~/.zshrc"
+alias vimrc="nvim ~/.vimrc"
+alias prox="export http_proxy=http://127.0.0.1:1080\
+&& export https_proxy=http://127.0.0.1:1080\
+&& export all_proxy=http://127.0.0.1:1080
+"
+alias tra="~/translator/translator.py"
+alias vim="nvim"
+alias vimm="/usr/bin/vim"
+#Make alacritty compatible with SSH
+alias ssh="TERM=xterm-256color ssh"
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+
+#ranger
+export RANGER_LOAD_DEFAULT_RC=FALSE
 
 #vi-mode
 bindkey -v
 bindkey -M viins '^L' vi-forward-char
 bindkey -M viins '^H' vi-backward-char
+bindkey -M vicmd 'L'  vi-forward-word-end
+bindkey -M vicmd 'H'  vi-backward-word
 function zle-keymap-select {
 	if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
 		echo -ne '\e[1 q'
@@ -149,3 +161,18 @@ EDITOR=vim
 export EDITOR
 
 eval $(thefuck --alias)
+# This speeds up pasting w/ autosuggest 
+# https://github.com/zsh-users/zsh-autosuggestions/issues/238
+paste-init() {
+  OLD_SELF_INSERT=${${(s.:.)widgets[self-insert]}[2,3]}
+  zle -N self-insert url-quote-magic # I wonder if you'd need `.url-quote-magic`?
+}
+
+paste-finish() {
+  zle -N self-insert $OLD_SELF_INSERT
+}
+zstyle :bracketed-paste-magic paste-init pasteinit 
+zstyle :bracketed-paste-magic paste-finish pastefinish
+
+#To make zsh colorful by grc
+#[[ -s "/etc/grc.zsh"  ]] && source /etc/grc.zsh
