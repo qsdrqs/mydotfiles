@@ -1,27 +1,38 @@
+
+"              __     _____ __  __ ____   ____ 
+"              \ \   / /_ _|  \/  |  _ \ / ___|
+"               \ \ / / | || |\/| | |_) | |    
+"                \ V /  | || |  | |  _ <| |___ 
+"                 \_/  |___|_|  |_|_| \_\\____|
+                                
 set nocompatible
 let &t_ut=''
-let mapleader = ','                     "The default leader is \, but a comma is much better. 尽量减少小指的负担
+let mapleader = ' '                     "The default leader is \, but a space is much better. 尽量减少小指的负担
 " 替换查找（f 或 t) 上一个为 \
 noremap \ ,
-set encoding=utf-8
+map <leader>rc :tabe ~/.vimrc<CR>
+"set encoding=utf-8
 "显示相对行号
 set relativenumber
-set t_CO=256                            "Use 256 colors.This is usefull for terminal vim.
+set t_Co=256                            "Use 256 colors.This is usefull for terminal vim.
 set nu
 set cursorline                          "显示当前行
 set number                              "Let's activate line numbers.
 set clipboard=unnamedplus   "使用系统剪贴板"
 set showcmd
-set scrolloff=5 "屏幕下方保留5行"
-"jk为esc，想输入jk慢打即可
-inoremap jk <ESC> 
+"屏幕下方保留6行"
+set scrolloff=6
+"jk为esc，想输入jk慢打即可(找到更好的办法https://gitlab.com/interception/linux/plugins/caps2esc,直接将caps映射为esc和ctrl) 
+"inoremap jk <ESC>
+"两个分号相当于在行尾加分号（不是很好用）
 inoremap ;; <ESC>$a;
+packadd termdebug
 
+"set termguicolors
+hi Normal ctermbg=NONE
 if has("autocmd")
   au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif "可以保存退出时的光标位置"
 endif
-    set laststatus =2
-    set noshowmode
 
 set mouse=a
 set fileformat=unix
@@ -44,7 +55,6 @@ set autoindent "自动缩进"
 
 set autochdir                           "在打开多个文件的时候自动切换目录
 
-
 set wildmenu
 set wildmode=longest:list,full
 
@@ -54,35 +64,26 @@ noremap th :-tabnext<CR>
 noremap tl :+tabnext<CR>
 
 "快速翻页
-nnoremap H 7h
-nnoremap J 5j
-nnoremap K 5k
-nnoremap L 7l
+noremap H <nop>
+noremap J <nop>
+noremap K <nop>
+noremap L <nop>
+noremap H 7h
+noremap J 5j
+noremap K 5k
+noremap L 7l
 
-"查看函数文档
-nnoremap <C-P> K
-"----------------------Fold--------------------------------------"
-""set foldenable
-set foldmethod=indent
-"set foldcolumn=0           "设置折叠宽度
-setlocal foldlevel=99      "设置折叠层数为
-"set foldclose=all          "设置自动关闭折叠
-nnoremap <space> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
-"---------------------tex---------------------------------"
-""autocmd BufReadPost *.md setlocal spell spelllang=en_us,cjk
+autocmd BufReadPost *.md setlocal spell spelllang=en_us,cjk
 "忽略中文对英文进行拼写检查
 "" 使用 <C-l> 更改拼写错误
-"inoremap <C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
+noremap <leader><C-l> <c-g>u<Esc>[s1z=`]a<c-g>u
 "跳出括号（可能有更好的方法）
 inoremap <C-l> <Right>
 inoremap <C-h> <Left>
-set magic
-set backspace=indent,eol,start          "Make backspace behave like every other editor
 
-"---------------------Search---------------------------------"
 set hlsearch
 set incsearch
-set ignorecase smartcase               "
+set ignorecase smartcase               
 "搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 
 "split navigations
@@ -96,17 +97,9 @@ noremap <C-K> <C-W><C-K>
 noremap <C-L> <C-W><C-L>
 noremap <C-H> <C-W><C-H>
 
-noremap <right> :vertical resize-1<CR>
-noremap <up> :res -1<CR>
-noremap <down> :res +1<CR>
-noremap <left> :vertical resize+1<CR>
-"PowerLine
+noremap <right> :vertical resize+1<CR>
+noremap <up> :res +1<CR>
+noremap <down> :res -1<CR>
+noremap <left> :vertical resize-1<CR>
+"Airline
 
-"把 vim 插入状态的光标改为竖线 For VTE compatible terminals (urxvt, st, xterm,
-"gnome-terminal 3.x, Konsole KDE5 and others)
-let &t_SI = "\<Esc>[6 q"
-let &t_SR = "\<Esc>[4 q"
-let &t_EI = "\<Esc>[2 q"
-
-
-"================== UltiSnips ============{{{
