@@ -36,14 +36,17 @@ exec_always albert #alt+d call
 exec_always fcitx #输入法
 exec_always variety #desktop
 exec_always picom #beauty
+exec_always nm-applet
 exec_always flameshot
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+exec_always telegram-desktop
+exec_always /opt/v2ray-desktop/v2ray-desktop
 
 #set $refresh_i3status killall -SIGUSR1 i3status
 set $refresh_polybar killall -SIGUSR1 polybar
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% #&& $refresh_polybar
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% #&& $refresh_polybar
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_polybar
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle #&& $refresh_polybar
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle #&& $refresh_polybar
 
 # Use Mouse+$mod to drag floating windows to their wanted position

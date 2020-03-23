@@ -123,6 +123,7 @@ alias n="neofetch"
 alias ra="ranger"
 alias zshrc="nvim ~/.zshrc"
 alias vimrc="nvim ~/.vimrc"
+alias vimplug="nvim ~/.vimrc.plugs"
 alias prox="export http_proxy=http://127.0.0.1:1080\
 && export https_proxy=http://127.0.0.1:1080\
 && export all_proxy=http://127.0.0.1:1080
@@ -157,7 +158,7 @@ zle -N zle-keymap-select
 echo -ne '\e[5 q'
 
 KEYTIMEOUT=1
-EDITOR=vim 
+EDITOR=nvim 
 export EDITOR
 
 eval $(thefuck --alias)
@@ -175,4 +176,5 @@ zstyle :bracketed-paste-magic paste-init pasteinit
 zstyle :bracketed-paste-magic paste-finish pastefinish
 
 #To make zsh colorful by grc
-#[[ -s "/etc/grc.zsh"  ]] && source /etc/grc.zsh
+[[ -s "/etc/grc.zsh"  ]] && source /etc/grc.zsh
+alias ls='ls --color=auto'
