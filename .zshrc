@@ -133,6 +133,7 @@ alias vim="nvim"
 alias vimm="/usr/bin/vim"
 #Make alacritty compatible with SSH
 alias ssh="TERM=xterm-256color ssh"
+alias ctl="systemctl"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
