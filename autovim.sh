@@ -3,4 +3,4 @@ cp .vimrc ..
 cp .vimrc.plugs ..
 cd .vim
 mkdir ~/.vim
-cp * ~/.vim/
+cp -r * ~/.vim/
