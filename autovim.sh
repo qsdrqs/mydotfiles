@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-mv .vimrc ..
-mv .vimrc.plugs ..
+cp .vimrc ..
+cp .vimrc.plugs ..
 cd .vim
 mkdir ~/.vim
-mv * ~/.vim/
+cp * ~/.vim/
