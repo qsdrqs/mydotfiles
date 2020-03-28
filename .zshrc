@@ -134,7 +134,8 @@ alias vimm="/usr/bin/vim"
 #Make alacritty compatible with SSH
 alias ssh="TERM=xterm-256color ssh"
 alias ctl="systemctl"
-
+#Turn off the touch pad
+alias to="/sbin/trackpad-toggle.sh"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
