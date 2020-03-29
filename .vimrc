@@ -51,15 +51,21 @@ set shiftwidth=4
 set softtabstop=4
 " " 设置编辑时制表符占用空格数
 set tabstop=4
-set expandtab
+"set expandtab
 set smartindent "智能缩进"
 set cindent "C 语言风格缩进"
 set autoindent "自动缩进"
 
+"使空格和缩进显示字符
+set list
+set listchars=tab:▸\ ,trail:▫
+"hi NonText ctermfg=16 guifg=#4a4a59
+"hi SpecialKey ctermfg=16 guifg=#4a4a59
+
 set autochdir                           "在打开多个文件的时候自动切换目录
 
 set wildmenu
-set wildmode=longest:list,full
+set wildmode=longest:full
 
 "使tex中的conceal颜色一致
 hi clear Conceal
@@ -95,6 +101,7 @@ set backspace=indent,eol,start          "Make backspace behave like every other 
 "---------------------Search---------------------------------"
 set hlsearch
 set incsearch
+exec "nohlsearch"
 set ignorecase smartcase               
 "搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 
@@ -121,4 +128,3 @@ noremap <left> :vertical resize-1<CR>
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
-

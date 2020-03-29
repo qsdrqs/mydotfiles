@@ -7,6 +7,7 @@
 "                                                                
  
 
+"已知所需依赖：1.nodejs 2.yarn 3.python3 4.ctags 5.global 6.pygments
 set rtp+=$HOME/.vim/plugged/
 call plug#begin('~/.vim/plugged')
 
@@ -18,7 +19,7 @@ vmap <silent> <Leader>r <Plug>TranslateV
 " Leader>w 翻译光标下的文本，在窗口中显示
 nmap <silent> <Leader>t <Plug>TranslateW
 vmap <silent> <Leader>t <Plug>TranslateWV
-" Leader>r 替换光标下的文本为翻译内容
+" Leader>r 替换光标下的文本为翻译内
 nmap <silent> <Leader>y <Plug>TranslateR
 vmap <silent> <Leader>y <Plug>TranslateRV
 
