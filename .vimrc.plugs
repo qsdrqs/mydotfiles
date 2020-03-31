@@ -7,8 +7,7 @@
 "                                                                
  
 
-"已知所需依赖：1.nodejs 2.yarn 3.python3 4.ctags 5.global 6.pygments
-set rtp+=$HOME/.vim/plugged/
+set rtp+=$HOME/.vim
 call plug#begin('~/.vim/plugged')
 
 Plug 'tmhedberg/SimpylFold'
@@ -19,7 +18,7 @@ vmap <silent> <Leader>r <Plug>TranslateV
 " Leader>w 翻译光标下的文本，在窗口中显示
 nmap <silent> <Leader>t <Plug>TranslateW
 vmap <silent> <Leader>t <Plug>TranslateWV
-" Leader>r 替换光标下的文本为翻译内
+" Leader>r 替换光标下的文本为翻译内容
 nmap <silent> <Leader>y <Plug>TranslateR
 vmap <silent> <Leader>y <Plug>TranslateRV
 
@@ -108,7 +107,7 @@ Plug 'mhinz/vim-startify'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 
 "function! g:Open_browser(url)
-    "exe 'silent !open -a "firefox-developer-edition -new-window " ' . a:url
+    "exe 'silent !open -a "firefox-developer-edition --new-window " ' . a:url
 "endfunction
 "let g:mkdp_browserfunc = 'g:Open_browser'
 Plug 'hotoo/pangu.vim' "中文排版插件
@@ -318,7 +317,8 @@ inoremap <silent><expr> <c-space> coc#refresh()
 "================== UltiSnips ============{{{
 " better key bindings for UltiSnipsExpandTrigger
 
-let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips', $HOME.'/.vim/plugged/vim-snippets/Ultisnips']
+"Not compatible with neovim when use more than one abs paths.
+let g:UltiSnipsSnippetDirectories=['plugged/vim-snippets/Ultisnips', 'UltiSnips']
 nnoremap <leader>es :UltiSnipsEdit<cr>
 let g:UltiSnipsEditSplit="vertical"
 function! g:UltiSnips_Complete()
