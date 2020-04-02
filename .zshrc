@@ -78,18 +78,30 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 plugins=(
 git
 colored-man-pages
+#使ccat和cless有色彩
 colorize
 github
 autojump
 zsh-autosuggestions
 zsh-syntax-highlighting
+#TODO 不知道有什么用
 autopep8
 python
+#像ubuntu一样提示
+command-not-found
+vim-interaction
+#找文件
+fzf
 )
 set -o vi
 source $ZSH/oh-my-zsh.sh
 
+ZSH_COLORIZE_STYLE="colorful"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=blue"
+
+export FZF_BASE=/usr/share/fzf
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+
 # User configuration
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -134,8 +146,11 @@ alias vimm="/usr/bin/vim"
 #Make alacritty compatible with SSH
 alias ssh="TERM=xterm-256color ssh"
 alias ctl="systemctl"
-#Turn off the touch pad
-alias to="/sbin/trackpad-toggle.sh"
+#Turn off the touch pad 
+#Sometimes system suspend will make touchpad unable to work, so it needs 3 times to make it work.
+alias to="/sbin/trackpad-toggle.sh;/sbin/trackpad-toggle.sh;/sbin/trackpad-toggle.sh"
+alias sshconfig="vim ~/.ssh/config"
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 

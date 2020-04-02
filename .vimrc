@@ -102,24 +102,25 @@ set backspace=indent,eol,start          "Make backspace behave like every other 
 set hlsearch
 set incsearch
 exec "nohlsearch"
+nnoremap <C-l> :<C-u>nohlsearch<CR><C-l>
 set ignorecase smartcase               
 "搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 
 "split navigations
-noremap <leader>a :set nosplitright<CR>:vsplit<CR>
-noremap <leader>d :set splitright<CR>:vsplit<CR>
-noremap <leader>s :set splitbelow<CR>:split<CR>
-noremap <leader>w :set nosplitbelow<CR>:split<CR>
+nnoremap <leader>a :set nosplitright<CR>:vsplit<CR>
+nnoremap <leader>d :set splitright<CR>:vsplit<CR>
+nnoremap <leader>s :set splitbelow<CR>:split<CR>
+nnoremap <leader>w :set nosplitbelow<CR>:split<CR>
 
-noremap <C-J> <C-W><C-J>
-noremap <C-K> <C-W><C-K>
-noremap <C-L> <C-W><C-L>
-noremap <C-H> <C-W><C-H>
+nnoremap <tab>j <C-W><C-J>
+nnoremap <tab>k <C-W><C-K>
+nnoremap <tab>l <C-W><C-L>
+nnoremap <tab>h <C-W><C-H>
 
-noremap <right> :vertical resize+1<CR>
-noremap <up> :res +1<CR>
-noremap <down> :res -1<CR>
-noremap <left> :vertical resize-1<CR>
+nnoremap <right> :vertical resize+1<CR>
+nnoremap <up> :res +1<CR>
+nnoremap <down> :res -1<CR>
+nnoremap <left> :vertical resize-1<CR>
 "Airline
 
 

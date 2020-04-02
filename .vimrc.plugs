@@ -7,6 +7,7 @@
 "                                                                
  
 
+nmap <leader>pl :tabe ~/.vimrc.plugs<CR>
 set rtp+=$HOME/.vim
 call plug#begin('~/.vim/plugged')
 
@@ -50,8 +51,12 @@ Plug 'puremourning/vimspector'  "调试器
     let g:vimspector_enable_mappings = 'HUMAN'  
 Plug 'scrooloose/nerdtree' , { 'on':  'NERDTreeToggle' }
 Plug 'jistr/vim-nerdtree-tabs'
-let g:NERDTreeWinSize = 20 "設定 NERDTree 視窗大小
-map <leader>nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
+	let g:NERDTreeWinSize = 20 "設定 NERDTree 視窗大小
+	map <leader>nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
+	"暂时用不到这两个功能
+	let g:NERDTreeMapJumpLastChild = ''
+	let g:NERDTreeMapJumpFirstChild = ''
+
 Plug 'tpope/vim-fireplace'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'nsf/gocode',{'for':'go'} "go语言自动补全
@@ -101,11 +106,12 @@ Plug 'mhinz/vim-startify'
  Plug 'lfv89/vim-interestingwords' "使用 <Leader>k 和 <Leader>K 选择和取消
  Plug 'MattesGroeger/vim-bookmarks' "书签工具
  Plug 'ap/vim-css-color'
+ Plug 'Chiel92/vim-autoformat'
+noremap <leader>af :Autoformat<CR>
 " -----------------end 美观 ------------------}}}
-"
+
 "=============== begin markdown ===============
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
-
 "function! g:Open_browser(url)
     "exe 'silent !open -a "firefox-developer-edition --new-window " ' . a:url
 "endfunction
