@@ -135,11 +135,11 @@ if &t_Co > 255
       hi CursorLine               ctermbg=235   cterm=NONE
       hi CursorLineNr ctermfg=208               cterm=NONE
    elseif exists("g:molokai_transparent") && g:molokai_transparent == 1
-      hi Normal       ctermfg=256 ctermbg=NONE
+      hi Normal       ctermfg=255 ctermbg=NONE
       hi CursorLine               ctermbg=234   cterm=NONE
       hi CursorLineNr ctermfg=208               cterm=NONE
    else
-      hi Normal       ctermfg=256 ctermbg=233
+      hi Normal       ctermfg=255 ctermbg=233
       hi CursorLine               ctermbg=234   cterm=NONE
       hi CursorLineNr ctermfg=208               cterm=NONE
    endif
