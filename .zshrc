@@ -76,11 +76,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-vi-mode
+#vi-mode
 pip
 alias-finder
 systemd
-sudo
 #提供tmux的alias
 tmux
 git
