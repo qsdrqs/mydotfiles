@@ -73,7 +73,8 @@ Plug 'Raimondi/delimitMate' " 自动补全括号
     "au FileType tex let g:delimitMate_quotes="\$"
     au FileType tex inoremap $ $$<left>
 Plug 'lilydjwg/fcitx.vim'   "切回normal后关闭fcitx
-Plug 'skywind3000/gutentags_plus'
+Plug 'skywind3000/gutentags_plus' "管理gtags，集中存放tags
+
 "括号补全
 Plug 'lervag/vimtex'
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}

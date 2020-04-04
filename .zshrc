@@ -76,6 +76,13 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+vi-mode
+pip
+alias-finder
+systemd
+sudo
+#提供tmux的alias
+tmux
 git
 colored-man-pages
 #使ccat和cless有色彩
@@ -83,17 +90,19 @@ colorize
 github
 autojump
 zsh-autosuggestions
-zsh-syntax-highlighting
-#TODO 不知道有什么用
-autopep8
-python
-#像ubuntu一样提示
+#zsh-syntax-highlighting
+fast-syntax-highlighting
+#autopep8
+#python
+#像ubuntu一样提示要安装的软件包
+fd
+zsh-interactive-cd
 command-not-found
 vim-interaction
 #找文件
 fzf
 )
-set -o vi
+#set -o vi
 source $ZSH/oh-my-zsh.sh
 
 ZSH_COLORIZE_STYLE="colorful"
@@ -127,9 +136,7 @@ export QT_AUTO_SCREEN_SCALE_FACTOR=1
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias t="tmux"
-alias ta="tmux attach-session -t"
 alias sp="sudo pacman"
-alias tk="tmux kill-pane"
 alias c="clear"
 alias n="neofetch"
 alias ra="ranger"
@@ -145,7 +152,6 @@ alias vim="nvim"
 alias vimm="/usr/bin/vim"
 #Make alacritty compatible with SSH
 alias ssh="TERM=xterm-256color ssh"
-alias ctl="systemctl"
 #Turn off the touch pad 
 #Sometimes system suspend will make touchpad unable to work, so it needs 3 times to make it work.
 alias to="/sbin/trackpad-toggle.sh;/sbin/trackpad-toggle.sh;/sbin/trackpad-toggle.sh"
@@ -164,6 +170,9 @@ bindkey -M viins '^L' vi-forward-char
 bindkey -M viins '^H' vi-backward-char
 bindkey -M vicmd 'L'  vi-forward-word-end
 bindkey -M vicmd 'H'  vi-backward-word
+bindkey -M vicmd '^w' vi-beginning-of-line
+bindkey -M vicmd '^e' vi-end-of-line
+
 function zle-keymap-select {
 	if [[ ${KEYMAP} == vicmd ]] || [[ $1 = 'block' ]]; then
 		echo -ne '\e[1 q'

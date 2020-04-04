@@ -87,6 +87,8 @@ noremap H 7h
 noremap J 5j
 noremap K 5k
 noremap L 7l
+nnoremap <C-w> 0
+nnoremap <C-e> $
 
 autocmd BufReadPost *.md setlocal spell spelllang=en_us,cjk
 "忽略中文对英文进行拼写检查
