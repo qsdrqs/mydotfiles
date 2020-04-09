@@ -51,11 +51,11 @@ Plug 'puremourning/vimspector'  "调试器
     let g:vimspector_enable_mappings = 'HUMAN'  
 Plug 'scrooloose/nerdtree' , { 'on':  'NERDTreeToggle' }
 Plug 'jistr/vim-nerdtree-tabs'
-	let g:NERDTreeWinSize = 20 "設定 NERDTree 視窗大小
-	map <leader>nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
-	"暂时用不到这两个功能
-	let g:NERDTreeMapJumpLastChild = ''
-	let g:NERDTreeMapJumpFirstChild = ''
+    let g:NERDTreeWinSize = 20 "設定 NERDTree 視窗大小
+    map <leader>nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
+    "暂时用不到这两个功能
+    let g:NERDTreeMapJumpLastChild = ''
+    let g:NERDTreeMapJumpFirstChild = ''
 
 Plug 'tpope/vim-fireplace'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
@@ -63,8 +63,10 @@ Plug 'nsf/gocode',{'for':'go'} "go语言自动补全
 Plug 'liuchengxu/vista.vim'
 map <leader>v :Vista<CR>
 Plug 'Yggdroot/LeaderF'
-Plug 'Yggdroot/indentLine', {'for': 'python'} "Python缩进竖线
+Plug 'Yggdroot/indentLine' ", {'for': ['python','json','c','java', 'cpp']} Python缩进竖线
     let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+    let g:indentLine_setConceal = 0
+
 Plug 'Raimondi/delimitMate' " 自动补全括号
     let delimitMate_smart_matchpairs = '^\%(\w\|\!\|[£]\|[^[:space:][:punct:]]\)'
     let delimitMate_expand_cr = 1
@@ -202,7 +204,7 @@ let g:vimtex_compiler_progname = 'nvr'
 "==================Conquer of Completion==========================
 " TextEdit might fail if hidden is not set.
 set hidden
-let g:coc_global_extensions = ['coc-python', 'coc-clangd', 'coc-cmake', 'coc-java', 'coc-texlab', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-phpls', 'coc-yank', 'coc-gitignore', 'coc-vimlsp', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-pyright', 'coc-flutter', 'coc-snippets']
+let g:coc_global_extensions = ['coc-python', 'coc-clangd', 'coc-cmake', 'coc-java', 'coc-texlab', 'coc-vimtex', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-phpls', 'coc-yank', 'coc-gitignore', 'coc-vimlsp', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-pyright', 'coc-flutter', 'coc-snippets']
 " Some servers have issues with backup files, see #649.
 "Coc snippets
 inoremap <silent><expr> <TAB>
@@ -325,7 +327,8 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " better key bindings for UltiSnipsExpandTrigger
 
 "Not compatible with neovim when use more than one abs paths.
-let g:UltiSnipsSnippetDirectories=['plugged/vim-snippets/Ultisnips', 'UltiSnips']
+"let g:UltiSnipsSnippetDirectories=['plugged/vim-snippets/Ultisnips', 'UltiSnips']
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 nnoremap <leader>es :UltiSnipsEdit<cr>
 let g:UltiSnipsEditSplit="vertical"
 function! g:UltiSnips_Complete()
@@ -354,10 +357,10 @@ endfunction
 
 
 if !exists("g:UltiSnipsJumpForwardTrigger")
-  let g:UltiSnipsJumpForwardTrigger = "<C-n>"
+  let g:UltiSnipsJumpForwardTrigger = "<C-k>"
 endif
 if !exists("g:UltiSnipsJumpBackwardTrigger")
-  let g:UltiSnipsJumpBackwardTrigger="<C-p>"
+  let g:UltiSnipsJumpBackwardTrigger="<C-j>"
 endif
 au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger     . " <C-R>=g:UltiSnips_Complete()<cr>"
 au InsertEnter * exec "inoremap <silent> " .     g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"

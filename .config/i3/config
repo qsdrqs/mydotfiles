@@ -25,27 +25,31 @@ font pango:monospace 8
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock -- i3lock -n -i /usr/share/wallpapers/Next/contents/images/3200x2000.jpg
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
-#exec --no-startup-id nm-applet
+exec_always ~/init/disable_wireless_aspm.sh #This makes wifi on SurfacePro5 works well.
+exec_always ~/init/touchpad.sh
+exec_always --no-startup-id nm-applet
 
-exec_always xset -dpms 
+#防誤觸
+#exec_always syndaemon -i 1 -R
 exec_always albert #alt+d call 
 exec_always fcitx #输入法
 exec_always variety #desktop
 exec_always picom #beauty
-exec_always nm-applet
+
+
 exec_always flameshot
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
 exec_always telegram-desktop
-exec_always /opt/v2ray-desktop/v2ray-desktop
+exec_always /usr/lib/org_kde_powerdevil
 
 #set $refresh_i3status killall -SIGUSR1 i3status
 set $refresh_polybar killall -SIGUSR1 polybar
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% #&& $refresh_polybar
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% #&& $refresh_polybar
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +4% #&& $refresh_polybar
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -4% #&& $refresh_polybar
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle #&& $refresh_polybar
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle #&& $refresh_polybar
 
@@ -96,7 +100,7 @@ bindsym $mod+v split v
 
 bindsym $mod+Shift+Return exec alacritty -e ranger
 bindsym Ctrl+$alt+a exec flameshot gui
-bindsym $mod+t exec thunar
+bindsym $mod+t exec dolphin
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 # I use firefox

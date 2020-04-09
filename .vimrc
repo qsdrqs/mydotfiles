@@ -8,8 +8,6 @@
 set nocompatible
 let &t_ut=''
 let mapleader = ' '                     "The default leader is \, but a space is much better. 尽量减少小指的负担
-" 替换查找（f 或 t) 上一个为 \
-noremap \ ,
 nmap <leader>rc :tabe ~/.vimrc<CR>
 "set encoding=utf-8
 "显示相对行号
@@ -51,7 +49,7 @@ set shiftwidth=4
 set softtabstop=4
 " " 设置编辑时制表符占用空格数
 set tabstop=4
-"set expandtab
+set expandtab
 set smartindent "智能缩进"
 set cindent "C 语言风格缩进"
 set autoindent "自动缩进"
@@ -71,9 +69,10 @@ set wildmode=longest:full
 hi clear Conceal
 highlight Conceal ctermfg=81
 "标签页
-noremap te :tabe<CR>
-noremap th :-tabnext<CR>
-noremap tl :+tabnext<CR>
+noremap <tab>e :tabe<CR>
+noremap <tab>c :tabc<CR>
+noremap <tab>h :-tabnext<CR>
+noremap <tab>l :+tabnext<CR>
 
 "保存
 nnoremap <leader><leader> :w<CR>
@@ -87,8 +86,8 @@ noremap H 7h
 noremap J 5j
 noremap K 5k
 noremap L 7l
-nnoremap <C-w> 0
-nnoremap <C-e> $
+noremap <C-w> ^
+noremap <C-e> $
 
 autocmd BufReadPost *.md setlocal spell spelllang=en_us,cjk
 "忽略中文对英文进行拼写检查
@@ -99,6 +98,7 @@ inoremap <C-l> <Right>
 inoremap <C-h> <Left>
 set magic
 set backspace=indent,eol,start          "Make backspace behave like every other editor
+
 
 "---------------------Search---------------------------------"
 set hlsearch
@@ -114,17 +114,31 @@ nnoremap <leader>d :set splitright<CR>:vsplit<CR>
 nnoremap <leader>s :set splitbelow<CR>:split<CR>
 nnoremap <leader>w :set nosplitbelow<CR>:split<CR>
 
-nnoremap <tab>j <C-W><C-J>
-nnoremap <tab>k <C-W><C-K>
-nnoremap <tab>l <C-W><C-L>
-nnoremap <tab>h <C-W><C-H>
+nnoremap <A-j> <C-W><C-J>
+nnoremap <A-k> <C-W><C-K>
+nnoremap <A-l> <C-W><C-L>
+nnoremap <A-h> <C-W><C-H>
+tnoremap <A-h> <C-\><C-N><C-w>h
+tnoremap <A-j> <C-\><C-N><C-w>j
+tnoremap <A-k> <C-\><C-N><C-w>k
+tnoremap <A-l> <C-\><C-N><C-w>l
+inoremap <A-h> <C-\><C-N><C-w>h
+inoremap <A-j> <C-\><C-N><C-w>j
+inoremap <A-k> <C-\><C-N><C-w>k
+inoremap <A-l> <C-\><C-N><C-w>l
 
 nnoremap <right> :vertical resize+1<CR>
 nnoremap <up> :res +1<CR>
 nnoremap <down> :res -1<CR>
 nnoremap <left> :vertical resize-1<CR>
-"Airline
-
+"Termdebug
+nnoremap \d :Termdebug<CR> :nnoremap K 5k<CR>
+nnoremap \e :Evaluate<CR>
+nnoremap \b :Break<CR>
+nnoremap \n :Over<CR>
+nnoremap \s :Step<CR>
+nnoremap \c :Continue<CR>
+let g:termdebug_wide = 1
 
 "把 vim 插入状态的光标改为竖线 For VTE compatible terminals (urxvt, st, xterm,
 "gnome-terminal 3.x, Konsole KDE5 and others)(neovim 不需要)
