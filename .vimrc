@@ -89,6 +89,14 @@ noremap L 7l
 noremap <C-w> ^
 noremap <C-e> $
 
+"中文符号的补全
+inoremap “ “”<Left>
+inoremap ‘ ‘’<Left>
+inoremap ” “”<Left>
+inoremap ’ ‘’<Left>
+inoremap （ （）<left>
+inoremap 《 《》<Left>
+
 autocmd BufReadPost *.md setlocal spell spelllang=en_us,cjk
 "忽略中文对英文进行拼写检查
 "" 使用 <C-l> 更改拼写错误
@@ -122,6 +130,7 @@ tnoremap <A-h> <C-\><C-N><C-w>h
 tnoremap <A-j> <C-\><C-N><C-w>j
 tnoremap <A-k> <C-\><C-N><C-w>k
 tnoremap <A-l> <C-\><C-N><C-w>l
+tnoremap <A-q> <C-\><C-n>
 inoremap <A-h> <C-\><C-N><C-w>h
 inoremap <A-j> <C-\><C-N><C-w>j
 inoremap <A-k> <C-\><C-N><C-w>k

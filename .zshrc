@@ -93,11 +93,11 @@ zsh-autosuggestions
 fast-syntax-highlighting
 #autopep8
 #python
-#像ubuntu一样提示要安装的软件包
+#替代find命令
 fd
 zsh-interactive-cd
+#像ubuntu一样提示要安装的软件包
 command-not-found
-vim-interaction
 #找文件
 fzf
 )
@@ -155,7 +155,11 @@ alias ssh="TERM=xterm-256color ssh"
 #Sometimes system suspend will make touchpad unable to work, so it needs 3 times to make it work.
 alias to="/sbin/trackpad-toggle.sh;/sbin/trackpad-toggle.sh;/sbin/trackpad-toggle.sh"
 alias sshconfig="vim ~/.ssh/config"
+alias ta="~/.vim/plugged/asynctasks.vim/bin/asynctask.py -f"
 
+mkcd(){
+    mkdir -p $1 && cd $1
+}
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
