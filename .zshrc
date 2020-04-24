@@ -206,4 +206,6 @@ zstyle :bracketed-paste-magic paste-finish pastefinish
 
 #To make zsh colorful by grc
 [[ -s "/etc/grc.zsh"  ]] && source /etc/grc.zsh
-alias ls='ls --color=auto'
+alias ls='lsd'
+unset LSCOLORS
+unset LS_COLORS

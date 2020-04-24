@@ -8,6 +8,7 @@
 set nocompatible
 let &t_ut=''
 let mapleader = ' '                     "The default leader is \, but a space is much better. 尽量减少小指的负担
+let maplocalleader = ' '
 nmap <leader>rc :tabe ~/.vimrc<CR>
 "set encoding=utf-8
 "显示相对行号
@@ -25,7 +26,7 @@ set scrolloff=6
 "在行尾加分号（不是很好用）
 "nnoremap ;; A;
 packadd termdebug
-
+"
 "set termguicolors
 hi Normal ctermbg=NONE
 if has("autocmd")
@@ -35,13 +36,14 @@ if filereadable(expand("~/.vimrc.plugs"))
     source ~/.vimrc.plugs
 endif
 
-set mouse=a
+"TODO 制作一个开关控制mouse
+"set mouse=a
 set fileformat=unix
 filetype on
 filetype plugin indent on
 syntax enable                           " 打开语法高亮
 syntax on                               " 开启文件类型侦测
-"set paste								"允许粘贴模式（避免粘贴时自动缩进影响格式）
+"set paste                              "允许粘贴模式（避免粘贴时自动缩进影响格式）
 set smarttab
 " 设置格式化时制表符占用空格数
 set shiftwidth=4
@@ -112,7 +114,7 @@ set backspace=indent,eol,start          "Make backspace behave like every other 
 set hlsearch
 set incsearch
 exec "nohlsearch"
-nnoremap <C-l> :<C-u>nohlsearch<CR><C-l>
+nnoremap <silent><C-l> :<C-u>nohlsearch<CR><C-l>
 set ignorecase smartcase               
 "搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 
