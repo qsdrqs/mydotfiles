@@ -7,6 +7,13 @@
 "                                                                
  
 " 依赖: nodejs
+
+"Auto Install vimplug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 nmap <leader>pl :tabe ~/.vimrc.plugs<CR>
 set rtp+=$HOME/.vim
 call plug#begin('~/.vim/plugged')
@@ -30,12 +37,24 @@ let g:suda#prefix = 'suda:'
 " Use sudo to open all root files 
 let g:suda_smart_edit = 1
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline' , {'on': []}
 Plug 'vim-airline/vim-airline-themes'
+Plug 'ryanoasis/vim-devicons', {'on': []} 
+function LazyLoadAirline(timer) abort
+    " let g:airline_theme = 'one'
+    let g:airline_theme='dark'
+    call plug#load('vim-airline')
+    call plug#load('vim-devicons')
+    execute 'AirlineInit'
+    " execute 'AirlineToggle'
+endfunction
+" https://github.com/vim-airline/vim-airline/issues/2047
+" autocmd VimEnter * call timer_start(50, 'LazyLoadAirline')
+autocmd VimEnter * ++once call timer_start(50, 'LazyLoadAirline')
+"
     "Disable some extensions
     "let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ycm', 'syntastic', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'whitespace']
-    let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ycm', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista']
-    let g:airline_theme='dark'
+    let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'fugitiveline']
     let g:airline_powerline_fonts = 1
     "let g:bufferline_echo = 0
     let g:airline_skip_empty_sections = 1
@@ -116,6 +135,22 @@ Plug 'francoiscabrol/ranger.vim'
     let g:NERDTreeHijackNetrw = 0 " add this line if you use NERDTree
     let g:ranger_replace_netrw = 1 " open ranger when vim open a directory
 Plug 'mhinz/vim-startify'
+
+"===========  git ============={{{
+Plug 'tpope/vim-fugitive'
+
+Plug 'rhysd/git-messenger.vim', {'on': 'GitMessenger'}
+    let g:git_messenger_no_default_mappings = 0
+    " let g:git_messenger_always_into_popup = 1
+    noremap <leader>gm :GitMessenger<CR>
+
+" 侧栏显示 git 标识
+Plug 'airblade/vim-gitgutter'
+    let g:gitgutter_max_signs=700
+
+" 确定插件仓库中的分支或者 tag
+Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
+"=========== end git =============}}}
 
 " -----------------begin 美观 ------------------{{{
  Plug 'itchyny/vim-cursorword' ", { 'for': ['c', 'cpp', 'java', 'python', 'julia', 'matlab'] }

@@ -7,8 +7,8 @@ if [[ -d "~/.vim" ]]; then
         cp -r ./.vim/UltiSnips/* ~/.vim/UltiSnips/
         cp -r ./.vim/colors/* ~/.vim/colors/
     else
-        cp -r * ~/.vim/
+        cp -r ./.vim/* ~/.vim/
     fi
 else
-    mkdir ~/.vim
+    cp -r ./.vim ~
 fi
