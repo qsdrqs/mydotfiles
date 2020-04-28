@@ -56,3 +56,12 @@ ${2:content}
 \end{document}
 endsnippet
 
+snippet lst "lstlisting"
+\begin{lstlisting}[language=${1:language}]
+	$2
+\end{lstlisting}
+endsnippet
+
+snippet lsti "lstinputlisting"
+\lstinputlisting[language=${1:language}]{${2:filepath}}
+endsnippet

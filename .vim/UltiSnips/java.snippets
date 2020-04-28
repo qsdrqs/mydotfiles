@@ -1,0 +1,15 @@
+snippet psm "public static method" b
+public static ${1:void} ${2:method}(${3:args}){
+	${4:implements}
+}
+endsnippet
+
+snippet new "new object" 
+${1:class} ${2:instance} =new ${3:method}(${4:args});
+endsnippet
+
+snippet fori "for int i"
+for (int i=0; i<$1; ++i) {
+	$2
+}
+endsnippet

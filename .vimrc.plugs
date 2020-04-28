@@ -6,7 +6,14 @@
 "          \_/  |___|_|  |_|       |_|   |_____\___/ \____|____/ 
 "                                                                
  
+" 依赖: nodejs
 
+"Auto Install vimplug
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 nmap <leader>pl :tabe ~/.vimrc.plugs<CR>
 set rtp+=$HOME/.vim
 call plug#begin('~/.vim/plugged')
@@ -30,17 +37,29 @@ let g:suda#prefix = 'suda:'
 " Use sudo to open all root files 
 let g:suda_smart_edit = 1
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline' , {'on': []}
 Plug 'vim-airline/vim-airline-themes'
+Plug 'ryanoasis/vim-devicons', {'on': []} 
+function LazyLoadAirline(timer) abort
+    " let g:airline_theme = 'one'
+    let g:airline_theme='dark'
+    call plug#load('vim-airline')
+    call plug#load('vim-devicons')
+    execute 'AirlineInit'
+    " execute 'AirlineToggle'
+endfunction
+" https://github.com/vim-airline/vim-airline/issues/2047
+" autocmd VimEnter * call timer_start(50, 'LazyLoadAirline')
+autocmd VimEnter * ++once call timer_start(50, 'LazyLoadAirline')
+"
     "Disable some extensions
     "let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ycm', 'syntastic', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'whitespace']
-    let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ycm', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista']
-    let g:airline_theme='dark'
+    let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'fugitiveline']
     let g:airline_powerline_fonts = 1
     "let g:bufferline_echo = 0
     let g:airline_skip_empty_sections = 1
 
-"Plug 'scrooloose/syntastic' "似乎在maven上有性能问题，且coc可以查错
+"Plug 'scrooloose/syntastic' "似乎在maven上有性能问题，且coc可以查错，TODO tex不能查错
 Plug 'nvie/vim-flake8' "Python语法检查工具，F7启动
 "Plug 'sickill/vim-monokai'
 Plug 'guiniol/molokai'
@@ -51,11 +70,11 @@ Plug 'puremourning/vimspector'  "调试器
     let g:vimspector_enable_mappings = 'HUMAN'  
 Plug 'scrooloose/nerdtree' , { 'on':  'NERDTreeToggle' }
 Plug 'jistr/vim-nerdtree-tabs'
-	let g:NERDTreeWinSize = 20 "設定 NERDTree 視窗大小
-	map <leader>nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
-	"暂时用不到这两个功能
-	let g:NERDTreeMapJumpLastChild = ''
-	let g:NERDTreeMapJumpFirstChild = ''
+    let g:NERDTreeWinSize = 20 "設定 NERDTree 視窗大小
+    map <leader>nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
+    "暂时用不到这两个功能
+    let g:NERDTreeMapJumpLastChild = ''
+    let g:NERDTreeMapJumpFirstChild = ''
 
 Plug 'tpope/vim-fireplace'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
@@ -63,8 +82,12 @@ Plug 'nsf/gocode',{'for':'go'} "go语言自动补全
 Plug 'liuchengxu/vista.vim'
 map <leader>v :Vista<CR>
 Plug 'Yggdroot/LeaderF'
-Plug 'Yggdroot/indentLine', {'for': 'python'} "Python缩进竖线
+    let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.root']
+    let g:Lf_WorkingDirectoryMode = 'Ac'
+Plug 'Yggdroot/indentLine' ", {'for': ['python','json','c','java', 'cpp']} Python缩进竖线
     let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+    let g:indentLine_setConceal = 0
+
 Plug 'Raimondi/delimitMate' " 自动补全括号
     let delimitMate_smart_matchpairs = '^\%(\w\|\!\|[£]\|[^[:space:][:punct:]]\)'
     let delimitMate_expand_cr = 1
@@ -74,6 +97,17 @@ Plug 'Raimondi/delimitMate' " 自动补全括号
     au FileType tex inoremap $ $$<left>
 Plug 'lilydjwg/fcitx.vim'   "切回normal后关闭fcitx
 Plug 'skywind3000/gutentags_plus' "管理gtags，集中存放tags
+Plug 'OmniSharp/omnisharp-vim' "C#
+"vim中直接编译运行
+Plug 'skywind3000/asynctasks.vim'
+Plug 'skywind3000/asyncrun.vim'
+    let g:asyncrun_open = 7
+    nnoremap <silent><leader>ar :AsyncTask file-run<cr>
+    nnoremap <silent><leader>ab :AsyncTask file-build<cr>
+    nnoremap <silent><leader>ae :AsyncTaskEdit<cr>
+    let g:asynctasks_confirm=0
+    let g:asynctasks_term_pos = 'bottom'
+    let g:asynctasks_term_rows = 7
 
 "括号补全
 Plug 'lervag/vimtex'
@@ -102,12 +136,31 @@ Plug 'francoiscabrol/ranger.vim'
     let g:ranger_replace_netrw = 1 " open ranger when vim open a directory
 Plug 'mhinz/vim-startify'
 
+"===========  git ============={{{
+Plug 'tpope/vim-fugitive'
+
+Plug 'rhysd/git-messenger.vim', {'on': 'GitMessenger'}
+    let g:git_messenger_no_default_mappings = 0
+    " let g:git_messenger_always_into_popup = 1
+    noremap <leader>gm :GitMessenger<CR>
+
+" 侧栏显示 git 标识
+Plug 'airblade/vim-gitgutter'
+    let g:gitgutter_max_signs=700
+
+" 确定插件仓库中的分支或者 tag
+Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
+"=========== end git =============}}}
+
 " -----------------begin 美观 ------------------{{{
  Plug 'itchyny/vim-cursorword' ", { 'for': ['c', 'cpp', 'java', 'python', 'julia', 'matlab'] }
  Plug 'lfv89/vim-interestingwords' "使用 <Leader>k 和 <Leader>K 选择和取消
  Plug 'MattesGroeger/vim-bookmarks' "书签工具
  Plug 'ap/vim-css-color'
  Plug 'Chiel92/vim-autoformat'
+ Plug 'luochen1990/rainbow' "彩虹括号
+ Plug 'sheerun/vim-polyglot' "高亮着色
+let g:rainbow_active = 1
 noremap <leader>af :Autoformat<CR>
 " -----------------end 美观 ------------------}}}
 
@@ -142,9 +195,12 @@ highlight Conceal ctermfg=81
 let g:tex_flavor='latex'
 let g:vimtex_view_method='zathura'
 let g:vimtex_quickfix_mode=0
-"使ycm生效
+"neovim
 let g:vimtex_compiler_progname = 'nvr'
 
+"键位绑定
+nmap <leader>ld <plug>(vimtex-doc-package)
+"使ycm生效
 "if !exists('g:ycm_semantic_triggers')
    "let g:ycm_semantic_triggers = {}
 "endif
@@ -202,12 +258,12 @@ let g:vimtex_compiler_progname = 'nvr'
 "==================Conquer of Completion==========================
 " TextEdit might fail if hidden is not set.
 set hidden
-let g:coc_global_extensions = ['coc-python', 'coc-clangd', 'coc-cmake', 'coc-java', 'coc-texlab', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-phpls', 'coc-yank', 'coc-gitignore', 'coc-vimlsp', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-pyright', 'coc-flutter', 'coc-snippets']
+let g:coc_global_extensions = ['coc-python', 'coc-clangd', 'coc-cmake', 'coc-java', 'coc-texlab', 'coc-vimtex', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-phpls', 'coc-yank', 'coc-gitignore', 'coc-vimlsp', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-pyright', 'coc-flutter', 'coc-snippets', 'coc-omnisharp']
 " Some servers have issues with backup files, see #649.
 "Coc snippets
 inoremap <silent><expr> <TAB>
       \ pumvisible() ? coc#_select_confirm() :
-      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand-jump',''])\<CR>" :
+      \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand',''])\<CR>" :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 
@@ -216,8 +272,8 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-let g:coc_snippet_next = '<tab>'
-
+let g:coc_snippet_next = '<C-j>'
+let g:coc_snippet_prev = '<C-k>'
 
 set nobackup
 set nowritebackup
@@ -325,7 +381,8 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " better key bindings for UltiSnipsExpandTrigger
 
 "Not compatible with neovim when use more than one abs paths.
-let g:UltiSnipsSnippetDirectories=['plugged/vim-snippets/Ultisnips', 'UltiSnips']
+"let g:UltiSnipsSnippetDirectories=['plugged/vim-snippets/Ultisnips', 'UltiSnips']
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
 nnoremap <leader>es :UltiSnipsEdit<cr>
 let g:UltiSnipsEditSplit="vertical"
 function! g:UltiSnips_Complete()
@@ -354,10 +411,10 @@ endfunction
 
 
 if !exists("g:UltiSnipsJumpForwardTrigger")
-  let g:UltiSnipsJumpForwardTrigger = "<C-n>"
+  let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 endif
 if !exists("g:UltiSnipsJumpBackwardTrigger")
-  let g:UltiSnipsJumpBackwardTrigger="<C-p>"
+  let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 endif
 au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger     . " <C-R>=g:UltiSnips_Complete()<cr>"
 au InsertEnter * exec "inoremap <silent> " .     g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
@@ -430,4 +487,28 @@ if has('persistent_undo')
 	set undodir=~/.config/nvim/tmp/undo,.
 endif
 
+"-------------------rainbow-----------------------"{{{
+let g:rainbow_conf = {
+	\	'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+	\	'ctermfgs': ['red', 202, 'yellow', 'green', 'cyan', 'blue', 93],
+	\	'operators': '_,_',
+	\	'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+	\	'separately': {
+	\		'*': {},
+	\		'tex': {
+	\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
+	\		},
+	\		'lisp': {
+	\			'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
+	\		},
+	\		'vim': {
+	\			'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
+	\		},
+	\		'html': {
+	\			'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
+	\		},
+	\		'css': 0,
+	\	}
+	\}
 
+"-------------------rainbow-----------------------"}}}
