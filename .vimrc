@@ -65,7 +65,7 @@ set listchars=tab:▸\ ,trail:▫
 set autochdir                           "在打开多个文件的时候自动切换目录
 
 set wildmenu
-set wildmode=longest:full
+"set wildmode=full "TODO:不太懂
 
 "使tex中的conceal颜色一致
 hi clear Conceal
