@@ -15,18 +15,18 @@ nmap <leader>rc :tabe ~/.vimrc<CR>
 set relativenumber
 set t_Co=256                            "Use 256 colors.This is usefull for terminal vim.
 set nu
+set statusline=%{coc#status()}%b
 set cursorline                          "显示当前行
 set number                              "Let's activate line numbers.
 set clipboard=unnamedplus   "使用系统剪贴板"
 set showcmd
 "屏幕下方保留6行"
 set scrolloff=6
-"jk为esc，想输入jk慢打即可(找到更好的办法https://gitlab.com/interception/linux/plugins/caps2esc,直接将caps映射为esc和ctrl) 
-"inoremap jk <ESC>
 "在行尾加分号（不是很好用）
 "nnoremap ;; A;
 packadd termdebug
 "
+
 "set termguicolors
 hi Normal ctermbg=NONE
 if has("autocmd")
@@ -91,6 +91,9 @@ noremap L 7l
 noremap <C-w> ^
 noremap <C-e> $
 
+"使得可以使用c-j轮询补全."NOTE: 可能有更好的办法
+inoremap <C-j> <C-n>
+
 "中文符号的补全
 inoremap “ “”<Left>
 inoremap ‘ ‘’<Left>
@@ -119,10 +122,10 @@ set ignorecase smartcase
 "搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 
 "split navigations
-nnoremap <leader>a :set nosplitright<CR>:vsplit<CR>
-nnoremap <leader>d :set splitright<CR>:vsplit<CR>
-nnoremap <leader>s :set splitbelow<CR>:split<CR>
-nnoremap <leader>w :set nosplitbelow<CR>:split<CR>
+nnoremap <leader>H :set nosplitright<CR>:vsplit<CR>
+nnoremap <leader>L :set splitright<CR>:vsplit<CR>
+nnoremap <leader>J :set splitbelow<CR>:split<CR>
+nnoremap <leader>K :set nosplitbelow<CR>:split<CR>
 
 nnoremap <A-j> <C-W><C-J>
 nnoremap <A-k> <C-W><C-K>
@@ -156,3 +159,6 @@ let g:termdebug_wide = 1
 let &t_SI = "\<Esc>[6 q"
 let &t_SR = "\<Esc>[4 q"
 let &t_EI = "\<Esc>[2 q"
+
+highlight Comment cterm=italic gui=italic
+highlight Function cterm=bold gui=bold

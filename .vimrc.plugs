@@ -24,8 +24,8 @@ Plug 'voldikss/vim-translator'
 nmap <silent> <Leader>r <Plug>Translate
 vmap <silent> <Leader>r <Plug>TranslateV
 " Leader>w 翻译光标下的文本，在窗口中显示
-nmap <silent> <Leader>t <Plug>TranslateW
-vmap <silent> <Leader>t <Plug>TranslateWV
+nmap <silent> <Leader>tr <Plug>TranslateW
+vmap <silent> <Leader>tr <Plug>TranslateWV
 " Leader>r 替换光标下的文本为翻译内容
 nmap <silent> <Leader>y <Plug>TranslateR
 vmap <silent> <Leader>y <Plug>TranslateRV
@@ -43,6 +43,7 @@ Plug 'ryanoasis/vim-devicons', {'on': []}
 function LazyLoadAirline(timer) abort
     " let g:airline_theme = 'one'
     let g:airline_theme='dark'
+    let g:airline_section_b = ''
     call plug#load('vim-airline')
     call plug#load('vim-devicons')
     execute 'AirlineInit'
@@ -54,7 +55,7 @@ autocmd VimEnter * ++once call timer_start(50, 'LazyLoadAirline')
 "
 "Disable some extensions
 "let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ycm', 'syntastic', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'whitespace']
-let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ale', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'fugitiveline']
+let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ale', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'fugitiveline', 'tagbar']
 let g:airline_powerline_fonts = 1
 "let g:bufferline_echo = 0
 let g:airline_skip_empty_sections = 1
@@ -79,11 +80,16 @@ let g:NERDTreeMapJumpFirstChild = ''
 Plug 'tpope/vim-fireplace'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'nsf/gocode',{'for':'go'} "go语言自动补全
+
 Plug 'liuchengxu/vista.vim'
 map <leader>v :Vista<CR>
+"与airline配合
+Plug 'majutsushi/tagbar'
+
 Plug 'Yggdroot/LeaderF'
 let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.root']
 let g:Lf_WorkingDirectoryMode = 'Ac'
+
 Plug 'Yggdroot/indentLine' ", {'for': ['python','json','c','java', 'cpp']} Python缩进竖线
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_setConceal = 0
@@ -135,6 +141,16 @@ let g:NERDTreeHijackNetrw = 0 " add this line if you use NERDTree
 let g:ranger_replace_netrw = 1 " open ranger when vim open a directory
 Plug 'mhinz/vim-startify'
 
+Plug 'easymotion/vim-easymotion'
+let g:EasyMotion_do_mapping=0
+" <Leader>f{char} to move to {char}
+map  <Leader>s <Plug>(easymotion-bd-f)
+nmap <Leader>s <Plug>(easymotion-overwin-f)
+
+" Move to word
+map  <Leader>w <Plug>(easymotion-bd-w)
+nmap <Leader>w <Plug>(easymotion-overwin-w)
+
 "===========  git ============={{{
 Plug 'tpope/vim-fugitive'
 
@@ -164,15 +180,23 @@ Plug 'sheerun/vim-polyglot' "高亮着色
 let g:polyglot_disabled = ['latex']
 " -----------------end 美观 ------------------}}}
 
-"=============== begin markdown ===============
+"=============== begin markdown ==============={{{
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install'  }
 "function! g:Open_browser(url)
 "exe 'silent !open -a "firefox-developer-edition --new-window " ' . a:url
 "endfunction
 "let g:mkdp_browserfunc = 'g:Open_browser'
+
 Plug 'hotoo/pangu.vim' "中文排版插件
 autocmd BufWritePre *.markdown,*.md,*.text,*.txt,*.wiki,*.cnx call PanGuSpacing()
-"=============== end markdown ===============
+
+Plug 'ferrine/md-img-paste.vim' "插入图片
+autocmd FileType markdown nmap <buffer><silent> <C-p> :call mdip#MarkdownClipboardImage()<CR>
+
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'dhruvasagar/vim-table-mode'
+"=============== end markdown ===============}}}
 " All of your Plugins must be added before the following line
 
 call plug#end()            " required
@@ -272,8 +296,8 @@ function! s:check_back_space() abort
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-let g:coc_snippet_next = '<C-j>'
-let g:coc_snippet_prev = '<C-k>'
+"let g:coc_snippet_next = '<C-j>'
+"let g:coc_snippet_prev = '<C-k>'
 
 set nobackup
 set nowritebackup
@@ -412,10 +436,10 @@ endfunction
 
 
 if !exists("g:UltiSnipsJumpForwardTrigger")
-    let g:UltiSnipsJumpForwardTrigger = "<C-j>"
+    "let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 endif
 if !exists("g:UltiSnipsJumpBackwardTrigger")
-    let g:UltiSnipsJumpBackwardTrigger="<C-k>"
+    "let g:UltiSnipsJumpBackwardTrigger="<C-k>"
 endif
 au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger     . " <C-R>=g:UltiSnips_Complete()<cr>"
 au InsertEnter * exec "inoremap <silent> " .     g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
