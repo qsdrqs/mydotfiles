@@ -1,10 +1,10 @@
 
-"              __     _____ __  __ ____   ____ 
+"              __     _____ __  __ ____   ____
 "              \ \   / /_ _|  \/  |  _ \ / ___|
-"               \ \ / / | || |\/| | |_) | |    
-"                \ V /  | || |  | |  _ <| |___ 
+"               \ \ / / | || |\/| | |_) | |
+"                \ V /  | || |  | |  _ <| |___
 "                 \_/  |___|_|  |_|_| \_\\____|
-                                
+
 set nocompatible
 let &t_ut=''
 let mapleader = ' '                     "The default leader is \, but a space is much better. 尽量减少小指的负担
@@ -15,7 +15,6 @@ nmap <leader>rc :tabe ~/.vimrc<CR>
 set relativenumber
 set t_Co=256                            "Use 256 colors.This is usefull for terminal vim.
 set nu
-set statusline=%{coc#status()}%b
 set cursorline                          "显示当前行
 set number                              "Let's activate line numbers.
 set clipboard=unnamedplus   "使用系统剪贴板"
@@ -30,14 +29,20 @@ packadd termdebug
 "set termguicolors
 hi Normal ctermbg=NONE
 if has("autocmd")
-  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif "可以保存退出时的光标位置"
+    au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif "可以保存退出时的光标位置"
 endif
-if filereadable(expand("~/.vimrc.plugs"))
-    source ~/.vimrc.plugs
+"运行无插件vim
+if get(g:, 'vim_startup', 0) == 1
+
+else
+    if filereadable(expand("~/.vimrc.plugs"))
+        set statusline=%{coc#status()}
+        source ~/.vimrc.plugs
+    endif
 endif
 
 "TODO 制作一个开关控制mouse
-"set mouse=a
+set mouse=a
 set fileformat=unix
 filetype on
 filetype plugin indent on
@@ -71,10 +76,13 @@ set wildmenu
 hi clear Conceal
 highlight Conceal ctermfg=81
 "标签页
-noremap <tab>e :tabe<CR>
-noremap <tab>c :tabc<CR>
-noremap <tab>h :-tabnext<CR>
-noremap <tab>l :+tabnext<CR>
+nnoremap <tab>e :tabe<CR>
+nnoremap <tab>c :tabc<CR>
+nnoremap <tab>h :-tabnext<CR>
+nnoremap <tab>l :+tabnext<CR>
+
+"复制全文
+nmap yaa ggVGy<C-o>
 
 "保存
 nnoremap <leader><leader> :w<CR>
@@ -118,7 +126,7 @@ set hlsearch
 set incsearch
 exec "nohlsearch"
 nnoremap <silent><C-l> :<C-u>nohlsearch<CR><C-l>
-set ignorecase smartcase               
+set ignorecase smartcase
 "搜索时忽略大小写，但在有一个或以上大写字母时仍保持对大小写敏感
 
 "split navigations
@@ -162,3 +170,4 @@ let &t_EI = "\<Esc>[2 q"
 
 highlight Comment cterm=italic gui=italic
 highlight Function cterm=bold gui=bold
+

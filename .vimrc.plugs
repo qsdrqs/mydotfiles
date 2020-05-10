@@ -41,7 +41,6 @@ Plug 'vim-airline/vim-airline' , {'on': []}
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons', {'on': []}
 function LazyLoadAirline(timer) abort
-    " let g:airline_theme = 'one'
     let g:airline_theme='dark'
     let g:airline_section_b = ''
     call plug#load('vim-airline')
@@ -101,6 +100,9 @@ let delimitMate_expand_space = 1
 au FileType python let b:delimitMate_nesting_quotes = ['"']
 "au FileType tex let g:delimitMate_quotes="\$"
 au FileType tex inoremap $ $$<left>
+"TODO 简化配置
+au FileType markdown inoremap $ $$<left>
+au FileType markdown inoremap * **<left>
 Plug 'lilydjwg/fcitx.vim'   "切回normal后关闭fcitx
 Plug 'skywind3000/gutentags_plus' "管理gtags，集中存放tags
 "vim中直接编译运行
@@ -120,6 +122,7 @@ Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 set conceallevel=2
 let g:tex_conceal="abdmgs"
 "Plug 'vim-scripts/Align'
+"在底部显示函数的参数
 Plug 'Shougo/echodoc.vim'
 set laststatus =2
 set noshowmode
@@ -282,6 +285,20 @@ nmap <leader>ld <plug>(vimtex-doc-package)
 "==================Conquer of Completion==========================
 " TextEdit might fail if hidden is not set.
 set hidden
+
+function! StatusDiagnostic() abort
+    let info = get(b:, 'coc_diagnostic_info', {})
+    if empty(info) | return '' | endif
+    let msgs = []
+    if get(info, 'error', 0)
+        call add(msgs, 'E' . info['error'])
+    endif
+    if get(info, 'warning', 0)
+        call add(msgs, 'W' . info['warning'])
+    endif
+    return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
+endfunction
+
 let g:coc_global_extensions = ['coc-python', 'coc-clangd', 'coc-cmake', 'coc-java', 'coc-texlab', 'coc-vimtex', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-phpls', 'coc-yank', 'coc-gitignore', 'coc-vimlsp', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-pyright', 'coc-flutter', 'coc-snippets']
 " Some servers have issues with backup files, see #649.
 "Coc snippets
@@ -563,6 +580,6 @@ hi! SpellRare gui=undercurl guisp=magenta
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 nmap <silent><A-s> :ALEFixSuggest<CR>
 nmap <silent><A-i> :ALEDetail<CR>
-nmap <silent><A-f> :ALEFix 
+nmap <silent><A-f> :ALEFix
 
 "-------------------ale-----------------------"}}}

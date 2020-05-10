@@ -11,6 +11,9 @@ setopt nonomatch
 # Path to your oh-my-zsh installation.
 export ZSH="/home/qsdrqs/.oh-my-zsh"
 
+#Make alacritty compatible with SSH
+export TERM="xterm-256color"
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -95,11 +98,15 @@ fast-syntax-highlighting
 #python
 #替代find命令
 fd
-zsh-interactive-cd
+
+#fzf-tab可替代
+#zsh-interactive-cd
+
 #像ubuntu一样提示要安装的软件包
 command-not-found
 #找文件
 fzf
+fzf-tab
 )
 #set -o vi
 source $ZSH/oh-my-zsh.sh
@@ -108,6 +115,7 @@ ZSH_COLORIZE_STYLE="colorful"
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=blue"
 
 export FZF_BASE=/usr/share/fzf
+export FZF_DEFAULT_COMMAND='rg --hidden --ignore .git -l -g ""'
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
 
 # User configuration
@@ -149,8 +157,7 @@ alias prox="export http_proxy=http://127.0.0.1:1080\
 alias tra="~/translator/translator.py"
 alias vim="nvim"
 alias vimm="/usr/bin/vim"
-#Make alacritty compatible with SSH
-alias ssh="TERM=xterm-256color ssh"
+alias vi="vim --cmd 'let g:vim_startup=1'"
 #Turn off the touch pad 
 #Sometimes system suspend will make touchpad unable to work, so it needs 3 times to make it work.
 alias to="/sbin/trackpad-toggle.sh;/sbin/trackpad-toggle.sh;/sbin/trackpad-toggle.sh"
