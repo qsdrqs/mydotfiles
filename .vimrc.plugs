@@ -42,7 +42,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons', {'on': []}
 function LazyLoadAirline(timer) abort
     let g:airline_theme='dark'
-    let g:airline_section_b = ''
     call plug#load('vim-airline')
     call plug#load('vim-devicons')
     execute 'AirlineInit'
@@ -54,7 +53,7 @@ autocmd VimEnter * ++once call timer_start(50, 'LazyLoadAirline')
 "
 "Disable some extensions
 "let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ycm', 'syntastic', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'whitespace']
-let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ale', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'fugitiveline', 'tagbar']
+let g:airline_extensions =['tabline', 'bookmark', 'branch', 'gutentags', 'ale', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'fugitiveline', 'tagbar']
 let g:airline_powerline_fonts = 1
 "let g:bufferline_echo = 0
 let g:airline_skip_empty_sections = 1
@@ -70,7 +69,7 @@ Plug 'puremourning/vimspector'  "调试器
 let g:vimspector_enable_mappings = 'HUMAN'
 Plug 'scrooloose/nerdtree' , { 'on':  'NERDTreeToggle' }
 Plug 'jistr/vim-nerdtree-tabs'
-let g:NERDTreeWinSize = 20 "設定 NERDTree 視窗大小
+let g:NERDTreeWinSize = 30 "設定 NERDTree 視窗大小
 map <leader>nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
 "暂时用不到这两个功能
 let g:NERDTreeMapJumpLastChild = ''
@@ -78,7 +77,6 @@ let g:NERDTreeMapJumpFirstChild = ''
 
 Plug 'tpope/vim-fireplace'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'nsf/gocode',{'for':'go'} "go语言自动补全
 
 Plug 'liuchengxu/vista.vim'
 map <leader>v :Vista<CR>
@@ -99,6 +97,7 @@ let delimitMate_expand_cr = 1
 let delimitMate_expand_space = 1
 au FileType python let b:delimitMate_nesting_quotes = ['"']
 "au FileType tex let g:delimitMate_quotes="\$"
+
 au FileType tex inoremap $ $$<left>
 "TODO 简化配置
 au FileType markdown inoremap $ $$<left>
@@ -114,9 +113,10 @@ nnoremap <silent><leader>ab :AsyncTask file-build<cr>
 nnoremap <silent><leader>ae :AsyncTaskEdit<cr>
 let g:asynctasks_confirm=0
 let g:asynctasks_term_pos = 'bottom'
-let g:asynctasks_term_rows = 7
+let g:asynctasks_term_rows = 14
 
-"括号补全
+Plug 'uiiaoo/java-syntax.vim' "java高亮
+
 Plug 'lervag/vimtex'
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 set conceallevel=2
@@ -167,7 +167,6 @@ Plug 'airblade/vim-gitgutter'
 let g:gitgutter_max_signs=700
 
 " 确定插件仓库中的分支或者 tag
-Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
 "=========== end git =============}}}
 
 " -----------------begin 美观 ------------------{{{
@@ -199,6 +198,7 @@ autocmd FileType markdown nmap <buffer><silent> <C-p> :call mdip#MarkdownClipboa
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'dhruvasagar/vim-table-mode'
+
 "=============== end markdown ===============}}}
 " All of your Plugins must be added before the following line
 
@@ -451,7 +451,6 @@ function! g:UltiSnips_Reverse()
     return ""
 endfunction
 
-
 if !exists("g:UltiSnipsJumpForwardTrigger")
     "let g:UltiSnipsJumpForwardTrigger = "<C-j>"
 endif
@@ -580,6 +579,7 @@ hi! SpellRare gui=undercurl guisp=magenta
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 nmap <silent><A-s> :ALEFixSuggest<CR>
 nmap <silent><A-i> :ALEDetail<CR>
-nmap <silent><A-f> :ALEFix
+"TODO 不是一个好的解决方案
+nmap <silent><A-f> :CocFix<CR>
 
 "-------------------ale-----------------------"}}}
