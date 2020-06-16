@@ -10,6 +10,7 @@ let &t_ut=''
 let mapleader = ' '                     "The default leader is \, but a space is much better. 尽量减少小指的负担
 let maplocalleader = ' '
 nmap <leader>rc :tabe ~/.vimrc<CR>
+set fileencodings=utf-8,gb2312,gbk,gb18030
 "set encoding=utf-8
 "显示相对行号
 set relativenumber
@@ -19,8 +20,8 @@ set cursorline                          "显示当前行
 set number                              "Let's activate line numbers.
 set clipboard=unnamedplus   "使用系统剪贴板"
 set showcmd
-"屏幕下方保留6行"
-set scrolloff=6
+"屏幕下方保留6行"可以用zz将所在行居中
+"set scrolloff=6
 "在行尾加分号（不是很好用）
 "nnoremap ;; A;
 packadd termdebug
@@ -41,7 +42,6 @@ else
     endif
 endif
 
-"TODO 制作一个开关控制mouse
 set mouse=a
 set fileformat=unix
 filetype on
@@ -70,7 +70,7 @@ set listchars=tab:▸\ ,trail:▫
 set autochdir                           "在打开多个文件的时候自动切换目录
 
 set wildmenu
-"set wildmode=full "TODO:不太懂
+"set wildmode=full "TODO:不太懂,而且目前还不是太好
 
 "使tex中的conceal颜色一致
 hi clear Conceal
@@ -81,8 +81,11 @@ nnoremap <tab>c :tabc<CR>
 nnoremap <tab>h :-tabnext<CR>
 nnoremap <tab>l :+tabnext<CR>
 
-"复制全文
-nmap yaa ggVGy<C-o>
+"全文操作
+nmap yaa ggyG<C-o>
+nmap daa ggdG
+nmap vaa ggVG
+nmap caa ggcG
 
 "保存
 nnoremap <leader><leader> :w<CR>
