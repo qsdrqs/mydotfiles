@@ -1,0 +1,27 @@
+{
+  "suggest.minTriggerInputLength": 2,
+  "suggest.noselect": false,
+  "diagnostic.enable": true,
+  "python.jediEnabled": true,
+  "java.home": "/usr/lib/jvm/default",
+  "java.import.gradle.enabled": true,
+  "java.import.maven.enabled": true,
+  "java.autobuild.enabled": true,
+  "clangd.semanticHighlighting": true,
+  "suggest.snippetIndicator": "⭐︎",
+  "explorer.icon.enableNerdfont": true,
+  "java.maven.downloadSources": true,
+  "explorer.previewAction.onHover": false,
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "html.autoClosingTags": true,
+  "list.insertMappings": {
+    "<C-j>": "do:refresh",
+    "<C-k>": "do:refresh"
+  },
+  "explorer.width": 30,
+  "explorer.keyMappings": {
+    "J": false,
+    "K": false
+  }
+
+}
