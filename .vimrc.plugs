@@ -6,15 +6,14 @@
 "          \_/  |___|_|  |_|       |_|   |_____\___/ \____|____/
 "
 
-" 依赖: nodejs, yarn
+" 依赖: nodejs, yarn/npm
 
 "Auto Install vimplug
 if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+               \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-nmap <leader>pl :tabe ~/.vimrc.plugs<CR>
 set rtp+=$HOME/.vim
 call plug#begin('~/.vim/plugged')
 
@@ -38,14 +37,20 @@ let g:suda#prefix = 'suda:'
 let g:suda_smart_edit = 1
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'vim-airline/vim-airline' , {'on': []}
+
+if has('nvim')
+  "在浏览器中使用vim
+  Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
+endif
+
 Plug 'vim-airline/vim-airline-themes'
 Plug 'ryanoasis/vim-devicons', {'on': []}
 function LazyLoadAirline(timer) abort
-    let g:airline_theme='dark'
-    call plug#load('vim-airline')
-    call plug#load('vim-devicons')
-    execute 'AirlineInit'
-    " execute 'AirlineToggle'
+   let g:airline_theme='dark'
+   call plug#load('vim-airline')
+   call plug#load('vim-devicons')
+   execute 'AirlineInit'
+   " execute 'AirlineToggle'
 endfunction
 " https://github.com/vim-airline/vim-airline/issues/2047
 " autocmd VimEnter * call timer_start(50, 'LazyLoadAirline')
@@ -53,29 +58,31 @@ autocmd VimEnter * ++once call timer_start(50, 'LazyLoadAirline')
 "
 "Disable some extensions
 "let g:airline_extensions =['tabline', 'bookmark', 'gutentags', 'ycm', 'syntastic', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'whitespace']
-let g:airline_extensions =['tabline', 'bookmark', 'branch', 'gutentags', 'ale', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'fugitiveline', 'tagbar']
+let g:airline_extensions =['tabline', 'bookmark', 'branch', 'gutentags', 'ale', 'keymap', 'netrw', 'quickfix', 'po', 'term', 'undotree', 'vimtex', 'vista', 'fugitiveline', 'tagbar', 'coc']
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#formatter = 'unique_tail'
 "let g:bufferline_echo = 0
 let g:airline_skip_empty_sections = 1
 
+Plug 'junegunn/vim-peekaboo' "按 ‘”’查看register里面有什么
 Plug 'dense-analysis/ale'
-Plug 'nvie/vim-flake8' "Python语法检查工具，F7启动
+"
 "Plug 'sickill/vim-monokai'
 Plug 'guiniol/molokai'
 colorscheme molokai
 let g:molokai_transparent=1
-"colorscheme monokai
+
 Plug 'puremourning/vimspector'  "调试器
 let g:vimspector_enable_mappings = 'HUMAN'
-Plug 'scrooloose/nerdtree' , { 'on':  'NERDTreeToggle' }
-Plug 'jistr/vim-nerdtree-tabs'
+"Plug 'scrooloose/nerdtree' , { 'on':  'NERDTreeToggleVCS' } "lazy load
+"Plug 'Xuyuanp/nerdtree-git-plugin'
 let g:NERDTreeWinSize = 30 "設定 NERDTree 視窗大小
-map <leader>nt :NERDTreeToggle<CR> "設定 , + n 打開 NERDTree
+"使得NerdTree能够自动找到git根目录
+map <silent><leader>nt :CocCommand explorer<CR>
 "暂时用不到这两个功能
 let g:NERDTreeMapJumpLastChild = ''
 let g:NERDTreeMapJumpFirstChild = ''
 
-Plug 'tpope/vim-fireplace'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 
 Plug 'liuchengxu/vista.vim'
@@ -84,26 +91,26 @@ map <leader>v :Vista<CR>
 Plug 'majutsushi/tagbar'
 
 Plug 'Yggdroot/LeaderF'
-let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.root']
+let g:Lf_RootMarkers = ['.git', '.hg', '.svn', '.root', '.project']
 let g:Lf_WorkingDirectoryMode = 'Ac'
 
 Plug 'Yggdroot/indentLine' ", {'for': ['python','json','c','java', 'cpp']} Python缩进竖线
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 let g:indentLine_setConceal = 0
 
-Plug 'Raimondi/delimitMate' " 自动补全括号
-let delimitMate_smart_matchpairs = '^\%(\w\|\!\|[£]\|[^[:space:][:punct:]]\)'
-let delimitMate_expand_cr = 1
-let delimitMate_expand_space = 1
-au FileType python let b:delimitMate_nesting_quotes = ['"']
-"au FileType tex let g:delimitMate_quotes="\$"
+Plug 'jiangmiao/auto-pairs'
+let g:AutoPairsMapCh=0
+
 
 au FileType tex inoremap $ $$<left>
-"TODO 简化配置
+
 au FileType markdown inoremap $ $$<left>
 au FileType markdown inoremap * **<left>
 Plug 'lilydjwg/fcitx.vim'   "切回normal后关闭fcitx
+
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'skywind3000/gutentags_plus' "管理gtags，集中存放tags
+
 "vim中直接编译运行
 Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/asyncrun.vim'
@@ -115,25 +122,30 @@ let g:asynctasks_confirm=0
 let g:asynctasks_term_pos = 'bottom'
 let g:asynctasks_term_rows = 14
 
-Plug 'uiiaoo/java-syntax.vim' "java高亮
+Plug 'alvan/vim-closetag' "标签自动关闭
+let g:closetag_filenames = '*.html,*.xhtml,*.phtml,*.xml,*.jsp'
+
+Plug 'liuchengxu/vim-which-key' "快捷键提示
+
 
 Plug 'lervag/vimtex'
 Plug 'KeitaNakamura/tex-conceal.vim', {'for': 'tex'}
 set conceallevel=2
 let g:tex_conceal="abdmgs"
-"Plug 'vim-scripts/Align'
 "在底部显示函数的参数
 Plug 'Shougo/echodoc.vim'
 set laststatus =2
 set noshowmode
 let g:echodoc_enable_at_startup = 2
 Plug 'tpope/vim-surround' "改变引号使用cs，添加引号使用ysiw(normal),或S(visual)
-Plug 'preservim/nerdcommenter' "添加注释<leader>cc，删除注释<leader>cu
+Plug 'preservim/nerdcommenter' "添加注释<leader>cc,<leader>cm,删除注释<leader>cu
 " To use echodoc, you must increase 'cmdheight' value.
 "set completeopt=menu,menuone
 "let g:ycm_add_preview_to_completeopt = 0
 Plug 'Linfee/ultisnips-zh-doc'
-Plug 'ludovicchabant/vim-gutentags'
+
+Plug 'mattn/emmet-vim' "html代码块插件
+
 Plug 'mbbill/undotree' "查看文件历史"
 map U :UndotreeToggle<CR>
 Plug 'francoiscabrol/ranger.vim'
@@ -146,14 +158,13 @@ Plug 'mhinz/vim-startify'
 
 Plug 'easymotion/vim-easymotion'
 let g:EasyMotion_do_mapping=0
-" <Leader>f{char} to move to {char}
-map  <Leader>s <Plug>(easymotion-bd-f)
-nmap <Leader>s <Plug>(easymotion-overwin-f)
-
-" Move to word
+" Move to begin of word
 map  <Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader>w <Plug>(easymotion-overwin-w)
 
+" Move to end of word
+map  <Leader>e <Plug>(easymotion-bd-e)
+"
 "===========  git ============={{{
 Plug 'tpope/vim-fugitive'
 
@@ -176,8 +187,15 @@ Plug 'MattesGroeger/vim-bookmarks' "书签工具
 Plug 'ap/vim-css-color'
 Plug 'Chiel92/vim-autoformat'
 noremap <leader>af :Autoformat<CR>
+let g:autoformat_remove_trailing_spaces = 0
+let g:autoformat_retab = 0
+let g:autoformat_autoindent = 0
+let g:formatters_xml = ['clangformat']
 Plug 'luochen1990/rainbow' "彩虹括号
-let g:rainbow_active = 1
+
+Plug 'jackguo380/vim-lsp-cxx-highlight'
+"Plug 'uiiaoo/java-syntax.vim' "java高亮
+Plug 'qsdrqs/java-syntax.vim'
 Plug 'sheerun/vim-polyglot' "高亮着色
 let g:polyglot_disabled = ['latex']
 " -----------------end 美观 ------------------}}}
@@ -209,10 +227,10 @@ filetype plugin indent on    " required
 "----------------------Fold--------------------------------------"
 let g:SimpylFold_docstring_preview=1
 ""set foldenable
-set foldmethod=marker
+"set foldmethod=mark
 "set foldcolumn=0           "设置折叠宽度
 setlocal foldlevel=99      "设置折叠层数为
-"set foldclose=all          "设置自动关闭折叠
+set foldclose=all          "设置自动关闭折叠
 "nnoremap <leader> @=((foldclosed(line('.')) < 0) ? 'zc' : 'zo')<CR>
 "---------------------tex---------------------------------"
 "使tex中的conceal颜色一致
@@ -234,6 +252,8 @@ nmap <leader>ld <plug>(vimtex-doc-package)
 "au VimEnter * let g:ycm_semantic_triggers.tex=g:vimtex#re#youcompleteme
 
 "================== youcompleteme ============{{{
+" ycm-java
+
 " 只能是 #include 或已打开的文件
 "set completeopt=longest,menu   "让Vim的补全菜单行为与一般IDE一致(参考VimTip1228)
 "let g:ycm_autoclose_preview_window_after_completion=1
@@ -253,25 +273,25 @@ nmap <leader>ld <plug>(vimtex-doc-package)
 "let g:ycm_key_list_select_completion = ['<tab>', '<Down>']
 "let g:ycm_key_list_previous_completion = ['<S-Tab>', '<Up>']
 "let g:ycm_filetype_whitelist = {
-            "\ "c":1,
-            "\ "cpp":1,
-            "\ "java":1,
-            "\ "objc":1,
-            "\ "python":1,
-            "\ "tex":1,
-            "\ "sh":1,
-            "\ "zsh":1,
-            "\ "zimbu":1,
-            "\ }
+           "\ "c":1,
+           "\ "cpp":1,
+           "\ "java":1,
+           "\ "objc":1,
+           "\ "python":1,
+           "\ "tex":1,
+           "\ "sh":1,
+           "\ "zsh":1,
+           "\ "zimbu":1,
+           "\ }
 ""let g:ycm_semantic_triggers =  {
 ""          \ 'python,java,go,erlang,perl': ['re!\w{2}'],
 ""          \ 'cs,lua,javascript': ['re!\w{2}'],
 ""          \ }
 "let g:ycm_semantic_triggers =  {
-            "\ 'c,cpp': ['re!\w{7}'],
-            "\ 'python,java,go,erlang,perl': ['re!\w{2}'],
-            "\ 'cs,lua,javascript': ['re!\w{2}'],
-            "\ }
+           "\ 'c,cpp': ['re!\w{7}'],
+           "\ 'python,java,go,erlang,perl': ['re!\w{2}'],
+           "\ 'cs,lua,javascript': ['re!\w{2}'],
+           "\ }
 "" 开启基于 tag 的补全，可以在这之后添加需要的标签路径
 "let g:ycm_collect_identifiers_from_tags_files=1
 "" 禁止缓存匹配项，每次都重新生成匹配项
@@ -282,39 +302,119 @@ nmap <leader>ld <plug>(vimtex-doc-package)
 "let g:ycm_complete_in_comments = 1
 "=================== YCM ========================================}}}
 
+"================== UltiSnips ============{{{
+" better key bindings for UltiSnipsExpandTrigger
+
+"Not compatible with neovim when use more than one abs paths.
+"let g:UltiSnipsSnippetDirectories=['plugged/vim-snippets/Ultisnips', 'UltiSnips']
+let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
+nnoremap <leader>s :UltiSnipsEdit<cr>
+let g:UltiSnipsEditSplit="vertical"
+function! g:UltiSnips_Complete()
+   call UltiSnips#ExpandSnippet()
+   if g:ulti_expand_res == 0
+       if pumvisible()
+           return "\<C-y>"
+       else
+           call UltiSnips#JumpForwards()
+           if g:ulti_jump_forwards_res == 0
+               return "\<TAB>"
+           endif
+       endif
+   endif
+   return ""
+endfunction
+
+function! g:UltiSnips_Reverse()
+   call UltiSnips#JumpBackwards()
+   if g:ulti_jump_backwards_res == 0
+       return "\<C-P>"
+   endif
+
+   return ""
+endfunction
+
+if !exists("g:UltiSnipsJumpForwardTrigger")
+   let g:UltiSnipsJumpForwardTrigger = "<tab>"
+endif
+if !exists("g:UltiSnipsJumpBackwardTrigger")
+   let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+endif
+au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger     . " <C-R>=g:UltiSnips_Complete()<cr>"
+au InsertEnter * exec "inoremap <silent> " .     g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
+"=================== end ========================================}}}
+
 "==================Conquer of Completion==========================
 " TextEdit might fail if hidden is not set.
+"TODO:在C++中有1. 头文件clangtidy不正确 2. 函数没有参数提示
+"TODO:C++头文件函数补全问题
 set hidden
 
-function! StatusDiagnostic() abort
-    let info = get(b:, 'coc_diagnostic_info', {})
-    if empty(info) | return '' | endif
-    let msgs = []
-    if get(info, 'error', 0)
-        call add(msgs, 'E' . info['error'])
-    endif
-    if get(info, 'warning', 0)
-        call add(msgs, 'W' . info['warning'])
-    endif
-    return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
+function! JavaStartDebugCallback(err, port)
+  execute "cexpr! 'Java debug started on port: " . a:port . "'"
+  call vimspector#LaunchWithSettings({ "configuration": "Java Attach", "AdapterPort": a:port })
 endfunction
 
-let g:coc_global_extensions = ['coc-python', 'coc-clangd', 'coc-cmake', 'coc-java', 'coc-texlab', 'coc-vimtex', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-phpls', 'coc-yank', 'coc-gitignore', 'coc-vimlsp', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-pyright', 'coc-flutter', 'coc-snippets']
+function JavaStartDebug()
+  call CocActionAsync('runCommand', 'vscode.java.startDebugSession', function('JavaStartDebugCallback'))
+endfunction
+
+nmap <F1> :call JavaStartDebug()<CR>
+
+function! StatusDiagnostic() abort
+   let info = get(b:, 'coc_diagnostic_info', {})
+   if empty(info) | return '' | endif
+   let msgs = []
+   if get(info, 'error', 0)
+       call add(msgs, 'E' . info['error'])
+   endif
+   if get(info, 'warning', 0)
+       call add(msgs, 'W' . info['warning'])
+   endif
+   return join(msgs, ' ') . ' ' . get(g:, 'coc_status', '')
+endfunction
+
+let g:coc_global_extensions = ['coc-marketplace', 'coc-python', 'coc-clangd', 'coc-cmake', 'coc-java', 'coc-texlab', 'coc-vimtex', 'coc-html', 'coc-json', 'coc-css', 'coc-tsserver', 'coc-phpls', 'coc-yank', 'coc-gitignore', 'coc-vimlsp', 'coc-stylelint', 'coc-tslint', 'coc-lists', 'coc-git', 'coc-pyright', 'coc-flutter', 'coc-snippets', 'coc-xml', 'coc-java-debug', 'coc-explorer']
+
+let g:coc_explorer_global_presets = {
+\   '.vim': {
+\     'root-uri': '~/.vim',
+\   },
+\   'floating': {
+\     'position': 'floating',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingTop': {
+\     'position': 'floating',
+\     'floating-position': 'center-top',
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingLeftside': {
+\     'position': 'floating',
+\     'floating-position': 'left-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'floatingRightside': {
+\     'position': 'floating',
+\     'floating-position': 'right-center',
+\     'floating-width': 50,
+\     'open-action-strategy': 'sourceWindow',
+\   },
+\   'simplify': {
+\     'file-child-template': '[selection | clip | 1] [indent][icon | 1] [filename omitCenter 1]'
+\   }
+\ }
+"
 " Some servers have issues with backup files, see #649.
 "Coc snippets
-inoremap <silent><expr> <TAB>
-            \ pumvisible() ? coc#_select_confirm() :
-            \ coc#expandableOrJumpable() ? "\<C-r>=coc#rpc#request('doKeymap', ['snippets-expand',''])\<CR>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ coc#refresh()
-
 function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
+   let col = col('.') - 1
+   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-"let g:coc_snippet_next = '<C-j>'
-"let g:coc_snippet_prev = '<C-k>'
+let g:coc_snippet_next = '<tab>'
+let g:coc_snippet_prev = '<s-tab>'
 
 set nobackup
 set nowritebackup
@@ -337,29 +437,30 @@ set signcolumn=yes
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ coc#refresh()
+           \ pumvisible() ? "\<C-y>" :
+           \ <SID>check_back_space() ? "\<TAB>" :
+           \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
+   let col = col('.') - 1
+   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<CR>"
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
 if has('patch8.1.1068')
-    " Use `complete_info` if your (Neo)Vim version supports it.
-    " #### NOT COMPATIBLE WITH delimitMate ####
+   " Use `complete_info` if your (Neo)Vim version supports it.
+   " #### NOT COMPATIBLE WITH delimitMate ####
 
-    "inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+   "inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 
 else
-    imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+   imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -376,11 +477,11 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> <leader>D :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-    else
-        call CocAction('doHover')
-    endif
+   if (index(['vim','help'], &filetype) >= 0)
+       execute 'h '.expand('<cword>')
+   else
+       call CocAction('doHover')
+   endif
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
@@ -391,14 +492,14 @@ nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
 xmap <leader>cf  <Plug>(coc-format-selected)
-nmap <leader>cf  <Plug>(coc-format-selected)
+nmap <leader>cf  <Plug>(coc-format)
 
 augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder.
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+   autocmd!
+   " Setup formatexpr specified filetype(s).
+   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+   " Update signature help on jump placeholder.
+   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
 " Add `:Format` command to format current buffer.
@@ -419,50 +520,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 "
 "==================COC==========================
-"================== UltiSnips ============{{{
-" better key bindings for UltiSnipsExpandTrigger
-
-"Not compatible with neovim when use more than one abs paths.
-"let g:UltiSnipsSnippetDirectories=['plugged/vim-snippets/Ultisnips', 'UltiSnips']
-let g:UltiSnipsSnippetDirectories=[$HOME.'/.vim/UltiSnips']
-nnoremap <leader>es :UltiSnipsEdit<cr>
-let g:UltiSnipsEditSplit="vertical"
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-                return "\<TAB>"
-            endif
-        endif
-    endif
-    return ""
-endfunction
-
-function! g:UltiSnips_Reverse()
-    call UltiSnips#JumpBackwards()
-    if g:ulti_jump_backwards_res == 0
-        return "\<C-P>"
-    endif
-
-    return ""
-endfunction
-
-if !exists("g:UltiSnipsJumpForwardTrigger")
-    "let g:UltiSnipsJumpForwardTrigger = "<C-j>"
-endif
-if !exists("g:UltiSnipsJumpBackwardTrigger")
-    "let g:UltiSnipsJumpBackwardTrigger="<C-k>"
-endif
-au InsertEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger     . " <C-R>=g:UltiSnips_Complete()<cr>"
-au InsertEnter * exec "inoremap <silent> " .     g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>"
-"=================== end ========================================}}}
 
 
-"tags{{{
+"-------------------gtags-----------------------"{{{
 let $GTAGSLABEL = 'native-pygments'
 let $GTAGSCONF = '/usr/share/gtags/gtags.conf'
 " gutentags 搜索工程目录的标志，当前文件路径向上递归直到碰到这些文件/目录名
@@ -474,10 +534,10 @@ let g:gutentags_ctags_tagfile = '.tags'
 " 同时开启 ctags 和 gtags 支持：
 let g:gutentags_modules = []
 if executable('ctags')
-    let g:gutentags_modules += ['ctags']
+   let g:gutentags_modules += ['ctags']
 endif
 if executable('gtags-cscope') && executable('gtags')
-    let g:gutentags_modules += ['gtags_cscope']
+   let g:gutentags_modules += ['gtags_cscope']
 endif
 
 " 将自动生成的 ctags/gtags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
@@ -495,9 +555,9 @@ let g:gutentags_ctags_extra_args += ['--output-format=e-ctags']
 let g:gutentags_auto_add_gtags_cscope = 0
 let g:gutentags_plus_nomap = 1
 "  在光标|下查找符号（引用）
-noremap <silent> <leader>gs :GscopeFind s <C-R><C-W><cr>
+noremap <silent> <leader>gr :GscopeFind s <C-R><C-W><cr>
 "  在光标|下找到符号定义
-noremap <silent> <leader>gg :GscopeFind g <C-R><C-W><cr>
+noremap <silent> <leader>gd :GscopeFind g <C-R><C-W><cr>
 "  此函数调用的函数|
 noremap <silent> <leader>gc :GscopeFind c <C-R><C-W><cr>
 "  调用此函数|函数
@@ -509,12 +569,13 @@ noremap <silent> <leader>gf :GscopeFind f <C-R>=expand("<cfile>")<cr><cr>
 "  在光标|下查找文件名
 noremap <silent> <leader>gi :GscopeFind i <C-R>=expand("<cfile>")<cr><cr>
 "  查找文件#，包括光标|下的文件名
-noremap <silent> <leader>gd :GscopeFind d <C-R><C-W><cr>
+noremap <silent> <leader>gg :GscopeFind d <C-R><C-W><cr>
 "  找到当前符号分配|位置
 noremap <silent> <leader>ga :GscopeFind a <C-R><C-W><cr>
 "  在ctags数据库|查找当前单词
 noremap <silent> <leader>gz :GscopeFind z <C-R><C-W><cr>
 let g:gutentags_define_advanced_commands = 1
+"-------------------gtags-----------------------"}}}
 "}}}
 
 "undotree 使undo在关闭后仍然保存修改历史
@@ -524,33 +585,16 @@ silent !mkdir -p ~/.config/nvim/tmp/undo
 set backupdir=~/.config/nvim/tmp/backup,.
 set directory=~/.config/nvim/tmp/backup,.
 if has('persistent_undo')
-    set undofile
-    set undodir=~/.config/nvim/tmp/undo,.
+   set undofile
+   set undodir=~/.config/nvim/tmp/undo,.
 endif
 
 "-------------------rainbow-----------------------"{{{
+let g:rainbow_active = 1
 let g:rainbow_conf = {
-            \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
-            \   'ctermfgs': ['red', 202, 'yellow', 'green', 'cyan', 'blue', 93],
-            \   'operators': '_,_',
-            \   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
-            \   'separately': {
-            \       '*': {},
-            \       'tex': {
-            \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/'],
-            \       },
-            \       'lisp': {
-            \           'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick', 'darkorchid3'],
-            \       },
-            \       'vim': {
-            \           'parentheses': ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/ fold', 'start=/(/ end=/)/ containedin=vimFuncBody', 'start=/\[/ end=/\]/ containedin=vimFuncBody', 'start=/{/ end=/}/ fold containedin=vimFuncBody'],
-            \       },
-            \       'html': {
-            \           'parentheses': ['start=/\v\<((area|base|br|col|embed|hr|img|input|keygen|link|menuitem|meta|param|source|track|wbr)[ >])@!\z([-_:a-zA-Z0-9]+)(\s+[-_:a-zA-Z0-9]+(\=("[^"]*"|'."'".'[^'."'".']*'."'".'|[^ '."'".'"><=`]*))?)*\>/ end=#</\z1># fold'],
-            \       },
-            \       'css': 0,
-            \   }
-            \}
+           \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+           \   'ctermfgs': ['red', 202, 'yellow', 'green', 'cyan', 'blue', 93],
+           \}
 
 "-------------------rainbow-----------------------"}}}
 
@@ -570,6 +614,9 @@ let g:ale_sign_error = "⨉"
 let g:ale_sign_warning = "⚠"
 let g:ale_sign_info = "\ue009"
 
+"禁用flake8(话太多)
+let g:ale_linters = {'python': ['mypy', 'pylint'], 'vue': ['']}
+
 hi! clear SpellBad
 hi! clear SpellCap
 hi! clear SpellRare
@@ -579,7 +626,7 @@ hi! SpellRare gui=undercurl guisp=magenta
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 nmap <silent><A-s> :ALEFixSuggest<CR>
 nmap <silent><A-i> :ALEDetail<CR>
-"TODO 不是一个好的解决方案
+
 nmap <silent><A-f> :CocFix<CR>
 
 "-------------------ale-----------------------"}}}
